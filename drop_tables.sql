@@ -1,0 +1,11 @@
+DROP TABLE "staff";
+DROP TABLE "order_item";
+DROP TABLE "order";
+DROP TABLE "payment";
+DROP TABLE "user";
+DROP TABLE "discount";
+DROP TABLE "product_spec";
+DROP TABLE "spec";
+DROP TABLE "product";
+DROP TABLE "manufacturer";
+DROP TABLE "type";
