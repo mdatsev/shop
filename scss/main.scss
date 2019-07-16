@@ -1,0 +1,37 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+$background_color_1: #f5f5f5;
+
+html {
+	height: 100%;
+}
+body {
+	height: 100%;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: center;
+	align-items: center;
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color: $background_color_1;
+}
+.main-form {
+	width: 100%;
+	max-width: 330px;
+	margin: auto;
+    .title {
+        @extend .h3, .mb-3, .font-weight-normal;
+    }
+    input[type="email"] {
+        @extend .form-control;
+    }
+    input[type="password"] {
+        @extend .form-control;
+    }
+    input[type="text"] {
+        @extend .form-control;
+    }
+    button[type="submit"] {
+        @extend .btn, .btn-lg, .btn-primary, .btn-block;
+    }
+}
