@@ -1,53 +1,63 @@
 CREATE TABLE "type" (
     "id" bigserial PRIMARY KEY,
-    "name" varchar UNIQUE
+    "name" varchar not null UNIQUE
 );
 
 CREATE TABLE "manufacturer" (
     "id" bigserial PRIMARY KEY,
-    "name" varchar UNIQUE
+    "name" varchar not null UNIQUE
 );
 
 CREATE TABLE "product" (
     "id" bigserial PRIMARY KEY,
-    "name" varchar,
+    "name" varchar not null,
     "manufacturer_id" bigint UNIQUE NOT NULL REFERENCES "manufacturer" ("id"),
     "type_id" bigint UNIQUE NOT NULL REFERENCES "type" ("id"),
-    "price" bigint
+    "price" bigint not null
 );
 
 CREATE TABLE "spec" (
     "id" bigserial PRIMARY KEY,
-    "name" varchar UNIQUE
+    "name" varchar not null UNIQUE
 );
 
 CREATE TABLE "product_spec" (
     "product_id" bigint UNIQUE NOT NULL REFERENCES "product" ("id"),
     "spec_id" bigint UNIQUE NOT NULL REFERENCES "spec" ("id"),
-    "value" varchar,
+    "value" varchar not null,
     PRIMARY KEY ("product_id", "spec_id")
 );
 
 CREATE TABLE "discount" (
     "id" bigserial PRIMARY KEY,
     "product_id" bigint UNIQUE NOT NULL REFERENCES "product" ("id"),
-    "start_timestamp" timestamptz,
-    "end_timestamp" timestamptz
+    "percentage" bigint not null,
+    "start_timestamp" timestamptz not null,
+    "end_timestamp" timestamptz not null
+);
+
+CREATE TABLE "price" (
+    "id" bigserial PRIMARY KEY,
+    "product_id" bigint UNIQUE NOT NULL REFERENCES "product" ("id"),
+    "value" bigint not null,
+    "start_timestamp" timestamptz not null
 );
 
 CREATE TABLE "user" (
     "id" bigserial PRIMARY KEY,
-    "name" varchar,
-    "email" varchar UNIQUE,
-    "password" varchar
+    "name" varchar not null,
+    "email" varchar UNIQUE not null,
+    "password" varchar not null
 );
 
 CREATE TABLE "payment" (
     "id" bigserial PRIMARY KEY,
-    "settled" boolean,
-    "payment_timestamp" timestamptz,
-    "transaction_id" varchar UNIQUE,
-    "amount" bigint
+    "settled" boolean not null,
+    "payment_timestamp" timestamptz not null,
+    "type" varchar not null,
+    "transaction_id" varchar not null,
+    "amount" bigint not null,
+    UNIQUE ("type", "transaction_id")
 );
 
 CREATE TABLE "order" (
@@ -59,14 +69,14 @@ CREATE TABLE "order" (
 CREATE TABLE "order_item" (
     "order_id" bigint UNIQUE NOT NULL REFERENCES "order" ("id"),
     "product_id" bigint UNIQUE NOT NULL REFERENCES "product" ("id"),
-    "quantity" bigint DEFAULT 1,
+    "quantity" bigint not null,
     PRIMARY KEY ("order_id", "product_id")
 );
 
 CREATE TABLE "staff" (
     "id" bigserial PRIMARY KEY,
-    "name" varchar,
-    "email" varchar UNIQUE,
-    "password" varchar
+    "name" varchar not null,
+    "email" varchar UNIQUE not null,
+    "password" varchar not null
 );
 
