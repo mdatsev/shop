@@ -1,36 +1,51 @@
-CREATE TABLE "type" (
-    "id" bigserial PRIMARY KEY,
-    "name" varchar not null UNIQUE
-);
-
-CREATE TABLE "manufacturer" (
-    "id" bigserial PRIMARY KEY,
-    "name" varchar not null UNIQUE
-);
-
-CREATE TABLE "product" (
-    "id" bigserial PRIMARY KEY,
-    "name" varchar not null,
-    "manufacturer_id" bigint UNIQUE NOT NULL REFERENCES "manufacturer" ("id"),
-    "type_id" bigint UNIQUE NOT NULL REFERENCES "type" ("id"),
-    "price" bigint not null
-);
+CREATE TYPE item_type AS ENUM ('product', 'subscription');
 
 CREATE TABLE "spec" (
     "id" bigserial PRIMARY KEY,
     "name" varchar not null UNIQUE
 );
 
-CREATE TABLE "product_spec" (
-    "product_id" bigint UNIQUE NOT NULL REFERENCES "product" ("id"),
-    "spec_id" bigint UNIQUE NOT NULL REFERENCES "spec" ("id"),
+
+CREATE TABLE "user" (
+    "id" bigserial PRIMARY KEY,
+    "name" varchar not null,
+    "email" varchar UNIQUE not null,
+    "password" varchar not null
+);
+
+CREATE TABLE "organization" (
+    "id" bigserial PRIMARY KEY,
+    "owner_id" bigserial NOT NULL REFERENCES "user" ("id"),
+    "name" varchar not null
+);
+
+CREATE TABLE "item" (
+    "id" bigserial PRIMARY KEY,
+    "name" varchar not null,
+    "organization_id" bigint NOT NULL REFERENCES "organization" ("id"),
+    "type" item_type not null,
+    "price" bigint not null
+);
+
+CREATE TABLE "subscription" (
+    "id" bigint PRIMARY KEY REFERENCES "item" ("id"),
+    "period" interval not null
+);
+
+CREATE TABLE "product" (
+    "id" bigint PRIMARY KEY REFERENCES "item" ("id"),
+    "available_quantity" bigint not null
+);
+CREATE TABLE "item_spec" (
+    "item_id" bigint NOT NULL REFERENCES "item" ("id"),
+    "spec_id" bigint NOT NULL REFERENCES "spec" ("id"),
     "value" varchar not null,
-    PRIMARY KEY ("product_id", "spec_id")
+    PRIMARY KEY ("item_id", "spec_id")
 );
 
 CREATE TABLE "discount" (
     "id" bigserial PRIMARY KEY,
-    "product_id" bigint UNIQUE NOT NULL REFERENCES "product" ("id"),
+    "item_id" bigint NOT NULL REFERENCES "item" ("id"),
     "percentage" bigint not null,
     "start_timestamp" timestamptz not null,
     "end_timestamp" timestamptz not null
@@ -38,16 +53,9 @@ CREATE TABLE "discount" (
 
 CREATE TABLE "price" (
     "id" bigserial PRIMARY KEY,
-    "product_id" bigint UNIQUE NOT NULL REFERENCES "product" ("id"),
+    "item_id" bigint NOT NULL REFERENCES "item" ("id"),
     "value" bigint not null,
     "start_timestamp" timestamptz not null
-);
-
-CREATE TABLE "user" (
-    "id" bigserial PRIMARY KEY,
-    "name" varchar not null,
-    "email" varchar UNIQUE not null,
-    "password" varchar not null
 );
 
 CREATE TABLE "payment" (
@@ -62,15 +70,15 @@ CREATE TABLE "payment" (
 
 CREATE TABLE "order" (
     "id" bigserial PRIMARY KEY,
-    "user_id" bigInt UNIQUE NOT NULL REFERENCES "user" ("id"),
-    "payment_id" bigint UNIQUE NOT NULL REFERENCES "payment" ("id")
+    "user_id" bigint NOT NULL REFERENCES "user" ("id"),
+    "payment_id" bigint UNIQUE REFERENCES "payment" ("id")
 );
 
 CREATE TABLE "order_item" (
-    "order_id" bigint UNIQUE NOT NULL REFERENCES "order" ("id"),
-    "product_id" bigint UNIQUE NOT NULL REFERENCES "product" ("id"),
+    "order_id" bigint NOT NULL REFERENCES "order" ("id"),
+    "item_id" bigint NOT NULL REFERENCES "item" ("id"),
     "quantity" bigint not null,
-    PRIMARY KEY ("order_id", "product_id")
+    PRIMARY KEY ("order_id", "item_id")
 );
 
 CREATE TABLE "staff" (

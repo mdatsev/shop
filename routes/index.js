@@ -8,8 +8,9 @@ router.get('/login', async (ctx, next) => {
 
 router.post('/login', async (ctx, next) => {
   const { email, password, remember } = ctx.request.body;
-  const result = await db.query(`SELECT "password" FROM "user" WHERE "email" = $1`, [email]);
+  const result = await db.query(`SELECT "password" FROM "user" WHERE "email" = $email`, { email });
   const hash = result.rows[0].password;
+
   ctx.body = await comparePassword(password, hash);
 });
 
@@ -20,9 +21,11 @@ router.get('/register', async (ctx, next) => {
 router.post('/register', async (ctx, next) => {
   const { name, email, password } = ctx.request.body;
   const passwordHash = await hashPassword(password);
+
   await db.query(
-    `INSERT INTO "user" ("name", "email", "password") VALUES ($1, $2, $3)`,
-    [name, email, passwordHash]
+    `INSERT INTO "user" ("name", "email", "password")
+     VALUES ($name, $email, $passwordHash)`,
+    { name, email, passwordHash }
   );
 });
 
