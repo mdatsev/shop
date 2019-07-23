@@ -9,8 +9,8 @@ router.post('/login', notLoggedIn, async ctx => {
   const userId = await user.login({ email, password });
 
   if (userId !== null) {
-    await ctx.auth.login(userId);
-    ctx.redirect(ctx.query.redirect);
+    await ctx.auth.login(userId, remember);
+    ctx.redirect(ctx.query.redirect || '/');
   } else {
     ctx.body = 'INVALID LOGIN';
   }

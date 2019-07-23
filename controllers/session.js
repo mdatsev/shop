@@ -2,11 +2,9 @@ const db = require('../db.js');
 const crypto = require('crypto');
 const util = require('util');
 const randomBytes = util.promisify(crypto.randomBytes);
-const getDefaultExpiration = () =>
-  new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000);//= now + approx. 1 year
 
 module.exports = {
-  async create ({ userId, expirationDate = getDefaultExpiration() }, client) {
+  async create ({ userId, expirationDate }, client) {
     const result = await db.query(`
       INSERT INTO "session" ("user_id", "expiration", "secret")
       VALUES ($userId, $expirationDate, $secret)
