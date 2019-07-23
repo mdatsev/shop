@@ -4,8 +4,10 @@ const logger = require('koa-logger');
 const bodyparser = require('koa-bodyparser');
 const views = require('koa-views');
 
-const index = require('./routes/index');
-const api = require('./routes/api');
+const { authenticateUser } = require('./middleware/user_auth.js');
+
+const index = require('./routes/index.js');
+const api = require('./routes/api.js');
 
 const app = new Koa();
 
@@ -20,6 +22,8 @@ app.use(require('koa-static')(path.join(__dirname, 'public')));
 app.use(views(path.join(__dirname, 'views'), {
   extension: 'pug',
 }));
+
+app.use(authenticateUser);
 
 app.use(index.routes(), index.allowedMethods());
 

@@ -16,17 +16,20 @@ module.exports = {
 
   async login ({ email, password }) {
     const result = await db.query(`
-      SELECT "password" FROM "user" WHERE "email" = $email`, {
+      SELECT "id", "password" FROM "user" WHERE "email" = $email`, {
       email,
     });
 
     if (result.rowCount !== 1) {
-      return false;
+      return null;
     }
+    const row = result.rows[0];
+    const hash = row.password;
 
-    const hash = result.rows[0].password;
-
-    return comparePassword(password, hash);
+    if (await comparePassword(password, hash)) {
+      return row.id;
+    }
+    return null;
   },
 };
 
