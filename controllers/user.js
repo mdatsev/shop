@@ -13,6 +13,7 @@ module.exports = {
       passwordHash,
     });
   },
+
   async login ({ email, password }) {
     const result = await db.query(`
       SELECT "password" FROM "user" WHERE "email" = $email`, {

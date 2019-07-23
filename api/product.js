@@ -10,4 +10,12 @@ module.exports = {
       organizationId: apiCtx.organizationId,
     });
   },
+
+  async get ({ id }, apiCtx) {
+    return product.get(id);
+  },
+
+  async getAllOrg (_params, apiCtx) {
+    return product.getAllOrg(apiCtx.organizationId);
+  },
 };

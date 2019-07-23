@@ -7,7 +7,7 @@ const METHOD_NOT_FOUND = -32601;
 // const INTERNAL_ERROR = -32603;
 // const SERVER_ERROR = -32000 to -32099;
 
-module.exports = async (ctx, next) => {
+module.exports = async ctx => {
   const { method, params, id } = ctx.request.body;
 
   function success (result) {
@@ -32,11 +32,17 @@ module.exports = async (ctx, next) => {
 
   try {
     const apiCtx = {
-      organizationId: 1,
+      organizationId: id,
     };
 
     if (method in methods) {
-      success(await methods[method](params, apiCtx));
+      const result = await methods[method](params, apiCtx);
+
+      if (result !== undefined) {
+        success(result);
+      } else {
+        error(-1, 'Method returned nothing.', {});
+      }
     } else {
       error(METHOD_NOT_FOUND, `Method not found.`, { method });
     }

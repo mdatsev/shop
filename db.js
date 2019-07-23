@@ -19,10 +19,12 @@ module.exports = {
   query: async (text, params, client) => {
     if (client === undefined) {
       const client = await pool.connect();
-      const result = await client.query(text, params);
 
-      client.release();
-      return result;
+      try {
+        return await client.query(text, params);
+      } finally {
+        client.release();
+      }
     } else {
       return client.query(text, params);
     }
