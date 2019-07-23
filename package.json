@@ -23,6 +23,7 @@
     "pug": "^2.0.3"
   },
   "devDependencies": {
+    "bootstrap": "^4.3.1",
     "eslint": "^6.0.1",
     "eslint-config-semistandard": "^14.0.0",
     "eslint-config-standard": "^13.0.1",
@@ -30,6 +31,7 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "sass": "^1.22.7"
   }
 }

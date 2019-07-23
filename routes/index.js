@@ -27,4 +27,6 @@ router.get('/me', loggedIn, ctx => {
   ctx.body = `hello ${ctx.auth.userId}`;
 });
 
+router.get('/', ctx => ctx.render('index'));
+
 module.exports = router;
