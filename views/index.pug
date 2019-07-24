@@ -11,14 +11,14 @@ block body
           .list-group-item(href='#') Item 3
       .col-lg-9
           .row
-            each val in [1, 2, 3, 4, 5]
+            each item in items
               .col-lg-4.col-md-6.mb-4
                   .card.h-100
                     a(href='#')
                       img.card-img-top(src='http://placehold.it/700x400', alt='')
                     .card-body
                       h4.card-title
-                        a(href='#') Item #{val}
-                      h5 $24.99
+                        a(href='#') #{item.name}
+                      h5 #{item.price}c
                       p.card-text
-                        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!
+                        | #{item.description}

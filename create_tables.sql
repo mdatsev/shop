@@ -24,6 +24,7 @@ CREATE TABLE "organization" (
 CREATE TABLE "item" (
     "id" bigserial PRIMARY KEY,
     "name" varchar NOT NULL,
+    "description" varchar,
     "organization_id" bigint NOT NULL REFERENCES "organization" ("id"),
     "type" item_type NOT NULL,
     "price" bigint NOT NULL

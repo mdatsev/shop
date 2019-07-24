@@ -14,4 +14,15 @@ module.exports = {
 
     return result.rows[0].id;
   },
+
+  async getAll (limit) {
+    const result = await db.query(`
+      SELECT name, description, type, price
+      FROM item
+      LIMIT $limit`, {
+      limit,
+    });
+
+    return result.rows;
+  },
 };
