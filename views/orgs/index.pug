@@ -1,0 +1,19 @@
+extends ../layout
+
+block body
+  .container
+    .row
+      .col-lg-3
+        h1.my-4 Sidebar
+        .list-group
+          .list-group-item(href='#') Create
+      .col-lg-9
+          .row
+            each org in orgs
+              .col-lg-4.col-md-6.mb-4
+                  .card.h-100
+                    a(href='#')
+                      img.card-img-top(src='http://placehold.it/700x400', alt='')
+                    .card-body
+                      h4.card-title
+                        a(href='#') #{org.name}

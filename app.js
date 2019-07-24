@@ -8,8 +8,9 @@ const views = require('./middleware/views.js');
 const errorHandler = require('./middleware/error_handler.js');
 const { authenticateUser } = require('./middleware/user_auth.js');
 
-const index = require('./routes/index.js');
 const api = require('./routes/api.js');
+const index = require('./routes/index.js');
+const organizations = require('./routes/organizations.js');
 
 const app = new Koa();
 
@@ -28,6 +29,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(index.routes(), index.allowedMethods());
+app.use(organizations.routes(), organizations.allowedMethods());
 
 app.on('error', (err, ctx) => {
   console.error(err);
