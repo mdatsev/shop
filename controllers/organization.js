@@ -24,6 +24,17 @@ module.exports = {
     return result.rows[0];
   },
 
+  async getSecret (id) {
+    const result = await db.query(`
+      SELECT secret
+      FROM organization
+      WHERE id = $id`, {
+      id,
+    });
+
+    return result.rows[0].secret;
+  },
+
   async getAllOfUser (id) {
     const result = await db.query(`
       SELECT name, id

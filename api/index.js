@@ -1,4 +1,5 @@
 const methods = require('./methods.js');
+const authApi = require('./auth.js')
 
 // const PARSE_ERROR = -32700;
 // const INVALID_REQUEST = -32600;
@@ -8,7 +9,7 @@ const METHOD_NOT_FOUND = -32601;
 // const SERVER_ERROR = -32000 to -32099;
 
 module.exports = async ctx => {
-  const { method, params, id } = ctx.request.body;
+  const { method, params, id, authInfo } = ctx.request.body;
 
   function success (result) {
     ctx.body = {
@@ -31,8 +32,10 @@ module.exports = async ctx => {
   }
 
   try {
+    const { organizationId } = await authApi.auth(authInfo);
+
     const apiCtx = {
-      organizationId: id,
+      organizationId,
     };
 
     if (method in methods) {
@@ -47,7 +50,7 @@ module.exports = async ctx => {
       error(METHOD_NOT_FOUND, `Method not found.`, { method });
     }
   } catch (e) {
-    error(-1, 'Uncaught exception', { debug: e });
-    throw e;
+    error(-1, 'Uncaught exception', { debug: e.message });
+    console.log(e);
   }
 };
