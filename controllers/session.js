@@ -28,13 +28,13 @@ module.exports = {
 
   async verify ({ userId, secret }, client) {
     const result = await db.query(`
-      SELECT NULL
+      SELECT secret
       FROM session
-      WHERE user_id = $userId AND secret = $secret AND expiration > NOW()`, {
+      WHERE user_id = $userId AND expiration > NOW()`, {
       userId,
-      secret,
     }, client);
 
-    return result.rowCount > 0;
+    return result.rowCount > 0 &&
+      crypto.timingSafeEqual(Buffer.from(result.secret), Buffer.from(secret));
   },
 };
