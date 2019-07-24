@@ -16,6 +16,11 @@ router.post('/login', notLoggedIn, async ctx => {
   }
 });
 
+router.post('/logout', ctx => {
+  ctx.auth.logout();
+  ctx.redirect('/');
+});
+
 router.get('/register', notLoggedIn, ctx => ctx.render('register'));
 router.post('/register', notLoggedIn, async ctx => {
   const { name, email, password } = ctx.request.body;
@@ -23,9 +28,7 @@ router.post('/register', notLoggedIn, async ctx => {
   await user.create({ name, email, password });
 });
 
-router.get('/me', loggedIn, ctx => {
-  ctx.body = `hello ${ctx.auth.userId}`;
-});
+router.get('/private', loggedIn, ctx => ctx.render('private', { name: ctx.auth.userName }));
 
 router.get('/', ctx => ctx.render('index'));
 

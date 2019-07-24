@@ -1,4 +1,5 @@
 const session = require('../controllers/session.js');
+const user = require('../controllers/user.js');
 const getDefaultExpiration = () =>
   new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000);//= now + approx. 1 year
 const getDefaultExpirationShort = () =>
@@ -12,6 +13,7 @@ module.exports = {
 
     if (authUserId && sessionSecret && session.verify({ userId: authUserId, sessionSecret })) {
       ctx.auth.userId = authUserId;
+      ctx.auth.userName = (await user.get(authUserId)).name;
     }
 
     ctx.auth.login = async (loginUserId, remember) => {
@@ -33,6 +35,12 @@ module.exports = {
         ctx.cookies.set('sessionSecret', sessionSecret);
         ctx.cookies.set('userId', loginUserId);
       }
+    };
+
+    ctx.auth.logout = async () => {
+      ctx.cookies.set('sessionSecret', null);
+      ctx.cookies.set('userId', null);
+      session.delete({ secret: sessionSecret })
     };
 
     await next();

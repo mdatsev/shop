@@ -16,6 +16,16 @@ module.exports = {
 
     return result.rows[0].secret;
   },
+
+  async delete ({ secret }, client) {
+    await db.query(`
+      DELETE
+      FROM session
+      WHERE secret = $secret`, {
+      secret,
+    }, client);
+  },
+
   async verify ({ userId, secret }, client) {
     const result = await db.query(`
       SELECT NULL

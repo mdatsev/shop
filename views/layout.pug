@@ -7,15 +7,24 @@ html
     // Navbar
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
       .container
-        a.navbar-brand(href='#') Shop Platform
+        a.navbar-brand(href='/') Shop Platform
         button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarResponsive')
           span.navbar-toggler-icon
         #navbarResponsive.collapse.navbar-collapse
           ul.navbar-nav.ml-auto
             li.nav-item
-              a.nav-link(href='#') Home
+              a.nav-link(href='/') Home
             li.nav-item
-              a.nav-link(href='#') About
+              a.nav-link(href='/private') Private
+            li.nav-item
+              a.nav-link(href='/login') Login
+            li.nav-item
+              a.nav-link(href='/register') Register
+            li.nav-item
+              form(method='post', action='logout')
+                button(type='submit') Logout
+            li.nav-item
+              a.nav-link(href='/about') About
     // Body
     block body
     // Bootstrap stuff

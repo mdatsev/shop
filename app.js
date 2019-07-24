@@ -12,6 +12,7 @@ const api = require('./routes/api.js');
 const app = new Koa();
 
 app.use(logger());
+
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text'],
 }));
@@ -22,6 +23,13 @@ app.use(require('koa-static')(path.join(__dirname, 'public')));
 app.use(views(path.join(__dirname, 'views'), {
   extension: 'pug',
 }));
+
+app.use(async (ctx, next) => {
+  await next();
+  if (ctx.status === 404) {
+    await ctx.render('404');
+  }
+});
 
 app.use(authenticateUser);
 

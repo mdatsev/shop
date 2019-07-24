@@ -14,6 +14,15 @@ module.exports = {
     });
   },
 
+  async get (id) {
+    const result = await db.query(`
+      SELECT "name" FROM "user" WHERE "id" = $id`, {
+      id,
+    });
+
+    return result.rows[0];
+  },
+
   async login ({ email, password }) {
     const result = await db.query(`
       SELECT "id", "password" FROM "user" WHERE "email" = $email`, {
