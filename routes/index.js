@@ -17,8 +17,8 @@ router.post('/login', notLoggedIn, async ctx => {
   }
 });
 
-router.post('/logout', ctx => {
-  ctx.auth.logout();
+router.post('/logout', async ctx => {
+  await ctx.auth.logout();
   ctx.redirect('/');
 });
 

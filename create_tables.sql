@@ -16,7 +16,7 @@ CREATE TABLE "user" (
 
 CREATE TABLE "organization" (
     "id" bigserial PRIMARY KEY,
-    "owner_id" bigserial NOT NULL REFERENCES "user" ("id"),
+    "owner_id" bigint NOT NULL REFERENCES "user" ("id"),
     "name" varchar NOT NULL,
     "secret_key" varchar
 );

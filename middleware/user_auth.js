@@ -42,7 +42,7 @@ module.exports = {
       ctx.auth.logout = async () => {
         ctx.cookies.set('sessionSecret', null);
         ctx.cookies.set('userId', null);
-        session.delete({ secret: sessionSecret });
+        await session.delete({ secret: sessionSecret });
       };
 
       await next();

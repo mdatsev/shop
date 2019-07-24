@@ -6,7 +6,7 @@ block body
       .col-lg-3
         h1.my-4 Sidebar
         .list-group
-          .list-group-item(href='#') Create
+          a.list-group-item(href='/orgs/create') Create
       .col-lg-9
           .row
             each org in orgs
@@ -16,4 +16,4 @@ block body
                       img.card-img-top(src='http://placehold.it/700x400', alt='')
                     .card-body
                       h4.card-title
-                        a(href='#') #{org.name}
+                        a(href=`/orgs/${org.id}/edit/index`) #{org.name}

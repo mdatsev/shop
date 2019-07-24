@@ -1,0 +1,13 @@
+extends ../../layout
+
+block body
+  .container
+    .row
+      .col-lg-3
+        h1.my-4 Sidebar
+        .list-group
+          a.list-group-item(href='./products') Products
+          a.list-group-item(href='./subscriptions') Subscriptions
+          a.list-group-item(href='./payments') Payments
+          a.list-group-item(href='./api') API
+      block content

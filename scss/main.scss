@@ -18,6 +18,9 @@ body {
     .title {
         @extend .h3, .mb-3, .font-weight-normal;
     }
+    input {
+        margin-bottom: 10px;
+    }
     input[type="email"] {
         @extend .form-control;
     }

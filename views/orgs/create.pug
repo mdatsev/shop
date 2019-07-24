@@ -1,0 +1,7 @@
+extends ../form
+
+block content
+  form.main-form(method='post')
+    h1.title New organization
+    input(name='name', type='text', placeholder='Organization name', required, autofocus)
+    button(type='submit') Create
