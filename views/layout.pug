@@ -14,15 +14,17 @@ html
           ul.navbar-nav.ml-auto
             li.nav-item
               a.nav-link(href='/') Home
-            li.nav-item
-              a.nav-link(href='/private') Private
-            li.nav-item
-              a.nav-link(href='/login') Login
-            li.nav-item
-              a.nav-link(href='/register') Register
-            li.nav-item
-              form(method='post', action='logout')
-                button(type='submit') Logout
+            if loggedIn
+              li.nav-item
+                a.nav-link(href='/private') Private
+              li.nav-item
+                form(method='post', action='logout')
+                  button(type='submit') Logout
+            else
+              li.nav-item
+                a.nav-link(href='/login') Login
+              li.nav-item
+                a.nav-link(href='/register') Register
             li.nav-item
               a.nav-link(href='/about') About
     // Body
