@@ -1,7 +1,5 @@
 const db = require('../db.js');
-const crypto = require('crypto');
-const util = require('util');
-const randomBytes = util.promisify(crypto.randomBytes);
+const secrets = require('../secrets.js');
 
 module.exports = {
   async create ({ userId, expirationDate }, client) {
@@ -11,7 +9,7 @@ module.exports = {
       RETURNING "secret"`, {
       userId,
       expirationDate,
-      secret: (await randomBytes(64)).toString('base64'),
+      secret: await secrets.generate(),
     }, client);
 
     return result.rows[0].secret;
@@ -35,6 +33,6 @@ module.exports = {
     }, client);
 
     return result.rowCount > 0 &&
-      crypto.timingSafeEqual(Buffer.from(result.secret), Buffer.from(secret));
+      secrets.compare(result.secret, secret);
   },
 };
