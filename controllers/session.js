@@ -4,9 +4,9 @@ const secrets = require('../secrets.js');
 module.exports = {
   async create ({ userId, expirationDate }, client) {
     const result = await db.query(`
-      INSERT INTO "session" ("user_id", "expiration", "secret")
+      INSERT INTO session (user_id, expiration, secret)
       VALUES ($userId, $expirationDate, $secret)
-      RETURNING "secret"`, {
+      RETURNING secret`, {
       userId,
       expirationDate,
       secret: await secrets.generate(),

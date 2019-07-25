@@ -6,7 +6,7 @@ module.exports = {
     const passwordHash = await hashPassword(password);
 
     await db.query(`
-      INSERT INTO "user" ("name", "email", "password")
+      INSERT INTO "user" (name, email, password)
       VALUES ($name, $email, $passwordHash)`, {
       name,
       email,
@@ -16,7 +16,7 @@ module.exports = {
 
   async get (id) {
     const result = await db.query(`
-      SELECT "name" FROM "user" WHERE "id" = $id`, {
+      SELECT name FROM "user" WHERE id = $id`, {
       id,
     });
 
@@ -25,7 +25,7 @@ module.exports = {
 
   async login ({ email, password }) {
     const result = await db.query(`
-      SELECT "id", "password" FROM "user" WHERE "email" = $email`, {
+      SELECT id, password FROM "user" WHERE email = $email`, {
       email,
     });
 

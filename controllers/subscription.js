@@ -2,11 +2,11 @@ const db = require('../db.js');
 const item = require('./item.js');
 
 const EXPOSED_FIELDS = `
-  subscription.id as "id",
-  subscription.period as "period",
-  item.name as "name",
-  item.type as "type",
-  item.price as "price"
+  subscription.id as id,
+  subscription.period as period,
+  item.name as name,
+  item.type as type,
+  item.price as price
 `;
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
       }, client);
 
       await db.query(`
-        INSERT INTO "subscription" ("id", "period")
+        INSERT INTO subscription (id, period)
         VALUES ($id, $period)`, {
         id,
         period,

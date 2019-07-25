@@ -3,9 +3,9 @@ const db = require('../db.js');
 module.exports = {
   async create ({ name, ownerId }) {
     const result = await db.query(`
-      INSERT INTO "organization" ("name", "owner_id")
+      INSERT INTO organization (name, owner_id)
       VALUES ($name, $ownerId)
-      RETURNING "id"`, {
+      RETURNING id`, {
       name,
       ownerId,
     });

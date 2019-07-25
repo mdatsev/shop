@@ -2,11 +2,11 @@ const db = require('../db.js');
 const item = require('./item.js');
 
 const EXPOSED_FIELDS = `
-  product.id as "id",
-  product.available_quantity as "availableQuantity",
-  item.name as "name",
-  item.type as "type",
-  item.price as "price"
+  product.id as id,
+  product.available_quantity as availableQuantity,
+  item.name as name,
+  item.type as type,
+  item.price as price
 `;
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
       }, client);
 
       await db.query(`
-        INSERT INTO "product" ("id", "available_quantity")
+        INSERT INTO product (id, available_quantity)
         VALUES ($id, $availableQuantity)`, {
         id,
         availableQuantity,
