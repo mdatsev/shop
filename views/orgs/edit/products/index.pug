@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  .col-lg-9
+    .row
+      .listing-header
+        h2
+          a(href='products/create').float-right + Create
+      each product in products
+        .col-lg-4.col-md-6.mb-4
+            .card.h-100
+              a(href='#')
+                img.card-img-top(src='http://placehold.it/700x400', alt='')
+              .card-body
+                h4.card-title
+                  a(href=`products/${product.id}`) #{product.name}
+                h5 #{product.price}c
+                p.card-text
+                  | #{product.description}

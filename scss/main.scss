@@ -11,10 +11,18 @@ body {
     margin: auto;
 }
 
+.listing-header {
+    width: 100%;
+    @extend .my-4;
+}
+
 .main-form {
 	width: 100%;
 	max-width: 330px;
 	margin: auto;
+}
+
+form {
     .title {
         @extend .h3, .mb-3, .font-weight-normal;
     }
@@ -25,6 +33,9 @@ body {
         @extend .form-control;
     }
     input[type="password"] {
+        @extend .form-control;
+    }
+    input[type="number"] {
         @extend .form-control;
     }
     input[type="text"] {

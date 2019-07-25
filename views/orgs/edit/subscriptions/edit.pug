@@ -1,0 +1,14 @@
+extends ../layout
+
+block head
+  base(href='..')
+
+block content
+  .col-lg-9
+    form(method='post')
+      h1.listing-header Edit product #{name}
+      input(name='name', type='text', placeholder='Name', required, autofocus, value=name)
+      input(name='description', type='text', placeholder='Description', value=description)
+      input(name='price', type='number', placeholder='Price', required, value=price)
+      input(name='period', type='text', placeholder='period', required, value=period)
+      //- button(type='submit') Save
