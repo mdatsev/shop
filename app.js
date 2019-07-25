@@ -11,6 +11,8 @@ const { authenticateUser } = require('./middleware/user_auth.js');
 const apiRoutes = require('./routes/api.js');
 const indexRoutes = require('./routes/index.js');
 const organizationsRoutes = require('./routes/organizations.js');
+const productsRoutes = require('./routes/products.js');
+const subscriptionsRoutes = require('./routes/subscriptions.js');
 
 const app = new Koa();
 
@@ -30,6 +32,8 @@ app.use(async (ctx, next) => {
 
 app.use(indexRoutes.routes(), indexRoutes.allowedMethods());
 app.use(organizationsRoutes.routes(), organizationsRoutes.allowedMethods());
+app.use(productsRoutes.routes(), productsRoutes.allowedMethods());
+app.use(subscriptionsRoutes.routes(), subscriptionsRoutes.allowedMethods());
 
 app.on('error', (err, ctx) => {
   console.error(err);

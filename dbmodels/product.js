@@ -3,7 +3,7 @@ const item = require('./item.js');
 
 const EXPOSED_FIELDS = `
   product.id as id,
-  product.available_quantity as availableQuantity,
+  product.available_quantity as "availableQuantity",
   item.name as name,
   item.type as type,
   item.price as price,

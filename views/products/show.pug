@@ -1,0 +1,11 @@
+extends ../layout
+
+block body
+  .center.col-lg-9
+    h1.mt-4 #{name}
+    p.lead Price: #{price}c
+    p
+      | by 
+      a(href='#') Not Implemented
+    img.img-fluid.rounded(src='http://placehold.it/700x400')
+    p #{description}

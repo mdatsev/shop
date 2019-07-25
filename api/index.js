@@ -1,5 +1,5 @@
 const methods = require('./methods.js');
-const authApi = require('./auth.js')
+const authApi = require('./auth.js');
 
 // const PARSE_ERROR = -32700;
 // const INVALID_REQUEST = -32600;

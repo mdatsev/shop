@@ -18,8 +18,17 @@ module.exports = {
 
   async getAll (limit) {
     const result = await db.query(`
-      SELECT name, description, type, price
-      FROM item
+      SELECT
+        COALESCE(p.id, s.id) as id,
+        i.name as name, 
+        i.description as description,
+        i.type as type,
+        i.price as price,
+        p.available_quantity as "availableQuantity",
+        s.period as period
+      FROM item i
+      LEFT JOIN product p ON p.item_id = i.id
+      LEFT JOIN subscription s ON s.item_id = i.id
       LIMIT $limit`, {
       limit,
     });
