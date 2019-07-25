@@ -11,9 +11,9 @@ const EXPOSED_FIELDS = `
 `;
 
 module.exports = {
-  async create ({ name, price, description, specs, availableQuantity, organizationId }, client) {
+  async create ({ name, price, description, specs, availableQuantity, organizationId }) {
     return db.doTransaction(async client => {
-      const id = await item.create({
+      const itemId = await item.create({
         name,
         price,
         type: 'product',
@@ -22,14 +22,16 @@ module.exports = {
         description,
       }, client);
 
-      await db.query(`
+      const result = await client.query(`
         INSERT INTO product (item_id, available_quantity)
-        VALUES ($id, $availableQuantity)`, {
-        id,
+        VALUES ($itemId, $availableQuantity)
+        RETURNING id`, {
+        itemId: itemId,
         availableQuantity,
-      }, client);
-      return id;
-    }, client);
+      });
+
+      return result.rows[0].id;
+    });
   },
 
   async get (id) {
@@ -42,6 +44,19 @@ module.exports = {
     });
 
     return result.rows[0];
+  },
+
+  async delete (id) {
+    await db.doTransaction(async client => {
+      const result = await client.query(`
+        DELETE FROM product
+        WHERE product.id = $id
+        RETURNING item_id`, {
+        id,
+      });
+
+      await item.delete(result.rows[0].item_id, client);
+    });
   },
 
   async getAllOrg (id) {

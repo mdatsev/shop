@@ -3,11 +3,14 @@ const subscription = require('./subscription.js');
 
 const api = {
   createProduct: product.create,
-  createSubscription: subscription.create,
-  getAllOrgProducts: product.getAllOrg,
   getProduct: product.get,
-  getAllOrgSubscriptions: subscription.getAllOrg,
+  deleteProduct: product.delete,
+  getAllOrgProducts: product.getAllOrg,
+
+  createSubscription: subscription.create,
   getSubscription: subscription.get,
+  deleteSubscription: subscription.delete,
+  getAllOrgSubscriptions: subscription.getAllOrg,
 };
 
 module.exports = api;

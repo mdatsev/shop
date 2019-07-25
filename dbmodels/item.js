@@ -16,6 +16,14 @@ module.exports = {
     return result.rows[0].id;
   },
 
+  async delete (id, client) {
+    await db.query(`
+      DELETE FROM item
+      WHERE item.id = $id`, {
+      id,
+    }, client);
+  },
+
   async getAll (limit) {
     const result = await db.query(`
       SELECT

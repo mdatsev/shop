@@ -16,6 +16,11 @@ module.exports = {
     return product.get(id);
   },
 
+  async delete ({ id }, apiCtx) {
+    await product.delete(id);
+    return {};
+  },
+
   async getAllOrg (_params, apiCtx) {
     return product.getAllOrg(apiCtx.organizationId);
   },

@@ -10,9 +10,9 @@ const EXPOSED_FIELDS = `
 `;
 
 module.exports = {
-  async create ({ name, price, description, specs, period, organizationId }, client) {
+  async create ({ name, price, description, specs, period, organizationId }) {
     return db.doTransaction(async client => {
-      const id = await item.create({
+      const itemId = await item.create({
         name,
         price,
         type: 'subscription',
@@ -21,14 +21,16 @@ module.exports = {
         description,
       }, client);
 
-      await db.query(`
+      const result = await client.query(`
         INSERT INTO subscription (item_id, period)
-        VALUES ($id, $period)`, {
-        id,
+        VALUES ($itemId, $period)
+        RETURNING id`, {
+        itemId,
         period,
-      }, client);
-      return id;
-    }, client);
+      });
+
+      return result.rows[0].id;
+    });
   },
 
   async get (id) {
@@ -41,6 +43,19 @@ module.exports = {
     });
 
     return result.rows[0];
+  },
+
+  async delete (id) {
+    await db.doTransaction(async client => {
+      const result = await client.query(`
+        DELETE FROM subscription
+        WHERE subscription.id = $id
+        RETURNING item_id`, {
+        id,
+      });
+
+      await item.delete(result.rows[0].item_id, client);
+    });
   },
 
   async getAllOrg (id) {

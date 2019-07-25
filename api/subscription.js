@@ -16,6 +16,11 @@ module.exports = {
     return subscription.get(id);
   },
 
+  async delete ({ id }, apiCtx) {
+    await subscription.delete(id);
+    return {};
+  },
+
   async getAllOrg (_params, apiCtx) {
     return subscription.getAllOrg(apiCtx.organizationId);
   },
