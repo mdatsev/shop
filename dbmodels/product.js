@@ -2,29 +2,31 @@ const db = require('../db.js');
 const item = require('./item.js');
 
 const EXPOSED_FIELDS = `
-  subscription.id as id,
-  subscription.period as period,
+  product.id as id,
+  product.available_quantity as availableQuantity,
   item.name as name,
   item.type as type,
-  item.price as price
+  item.price as price,
+  item.description as description
 `;
 
 module.exports = {
-  async create ({ name, price, specs, period, organizationId }, client) {
+  async create ({ name, price, description, specs, availableQuantity, organizationId }, client) {
     return db.doTransaction(async client => {
       const id = await item.create({
         name,
         price,
-        type: 'subscription',
+        type: 'product',
         specs,
         organizationId,
+        description,
       }, client);
 
       await db.query(`
-        INSERT INTO subscription (id, period)
-        VALUES ($id, $period)`, {
+        INSERT INTO product (item_id, available_quantity)
+        VALUES ($id, $availableQuantity)`, {
         id,
-        period,
+        availableQuantity,
       }, client);
       return id;
     }, client);
@@ -33,9 +35,9 @@ module.exports = {
   async get (id) {
     const result = await db.query(`
       SELECT ${EXPOSED_FIELDS}
-      FROM subscription
-      INNER JOIN item on subscription.id = item.id
-      WHERE subscription.id = $id`, {
+      FROM product
+      INNER JOIN item on product.item_id = item.id
+      WHERE product.id = $id`, {
       id,
     });
 
@@ -45,8 +47,8 @@ module.exports = {
   async getAllOrg (id) {
     const result = await db.query(`
       SELECT ${EXPOSED_FIELDS}
-      FROM subscription 
-      INNER JOIN item on subscription.id = item.id 
+      FROM product 
+      INNER JOIN item on product.item_id = item.id 
       WHERE item.organization_id = $id;`, {
       id,
     });

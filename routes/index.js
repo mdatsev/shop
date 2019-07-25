@@ -1,7 +1,7 @@
 const router = new (require('koa-router'))();
 const { loggedIn, notLoggedIn } = require('../middleware/user_auth.js');
-const user = require('../controllers/user.js');
-const item = require('../controllers/item.js');
+const user = require('../dbmodels/user.js');
+const item = require('../dbmodels/item.js');
 
 router.get('/login', notLoggedIn, ctx => ctx.render('login'));
 router.post('/login', notLoggedIn, async ctx => {
@@ -27,6 +27,7 @@ router.post('/register', notLoggedIn, async ctx => {
   const { name, email, password } = ctx.request.body;
 
   await user.create({ name, email, password });
+  ctx.redirect('/');
 });
 
 router.get('/private', loggedIn, ctx => ctx.render('private', { name: ctx.auth.userName }));

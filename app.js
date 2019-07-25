@@ -8,9 +8,9 @@ const views = require('./middleware/views.js');
 const errorHandler = require('./middleware/error_handler.js');
 const { authenticateUser } = require('./middleware/user_auth.js');
 
-const api = require('./routes/api.js');
-const index = require('./routes/index.js');
-const organizations = require('./routes/organizations.js');
+const apiRoutes = require('./routes/api.js');
+const indexRoutes = require('./routes/index.js');
+const organizationsRoutes = require('./routes/organizations.js');
 
 const app = new Koa();
 
@@ -18,7 +18,7 @@ app.use(logger());
 app.use(errorHandler());
 app.use(bodyparser({ enableTypes: ['json', 'form'] }));
 
-app.use(api.routes(), api.allowedMethods());
+app.use(apiRoutes.routes(), apiRoutes.allowedMethods());
 
 app.use(koastatic(path.join(__dirname, 'public')));
 app.use(views(path.join(__dirname, 'views')));
@@ -28,8 +28,8 @@ app.use(async (ctx, next) => {
   await next();
 });
 
-app.use(index.routes(), index.allowedMethods());
-app.use(organizations.routes(), organizations.allowedMethods());
+app.use(indexRoutes.routes(), indexRoutes.allowedMethods());
+app.use(organizationsRoutes.routes(), organizationsRoutes.allowedMethods());
 
 app.on('error', (err, ctx) => {
   console.error(err);

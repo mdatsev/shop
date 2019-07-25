@@ -1,5 +1,5 @@
 const db = require('../db.js');
-const secrets = require('../secrets.js');
+const secrets = require('../util/secrets.js');
 
 module.exports = {
   async create ({ userId, expirationDate }, client) {
@@ -28,11 +28,11 @@ module.exports = {
     const result = await db.query(`
       SELECT secret
       FROM session
-      WHERE user_id = $userId AND expiration > NOW()`, {
+      WHERE user_id = $userId AND $secret = secret AND expiration > NOW()`, {
       userId,
+      secret,
     }, client);
 
-    return result.rowCount > 0 &&
-      secrets.compare(result.secret, secret);
+    return result.rowCount > 0;
   },
 };

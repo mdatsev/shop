@@ -1,9 +1,10 @@
-const subscription = require('../controllers/subscription.js');
+const subscription = require('../dbmodels/subscription.js');
 
 module.exports = {
-  async create ({ name, price, specs, period }, apiCtx) {
+  async create ({ name, description, price, specs, period }, apiCtx) {
     return subscription.create({
       name,
+      description,
       price,
       specs,
       period,

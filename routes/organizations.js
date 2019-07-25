@@ -1,8 +1,8 @@
 const router = new (require('koa-router'))({ prefix: '/orgs' });
 const { loggedIn } = require('../middleware/user_auth.js');
 
-const organization = require('../controllers/organization.js');
-const product = require('../controllers/product.js');
+const organization = require('../dbmodels/organization.js');
+const product = require('../dbmodels/product.js');
 
 router.get('/', loggedIn, async ctx =>
   ctx.render('orgs/index', {
