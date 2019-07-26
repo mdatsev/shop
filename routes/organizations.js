@@ -4,6 +4,7 @@ const { loggedIn } = require('../middleware/user_auth.js');
 const organization = require('../dbmodels/organization.js');
 const product = require('../dbmodels/product.js');
 const subscription = require('../dbmodels/subscription.js');
+const shop = require('../dbmodels/shop.js');
 
 router.get('/', loggedIn, async ctx =>
   ctx.render('orgs/index', {
@@ -47,7 +48,7 @@ router.post('/:id/edit/products/create', loggedIn, async ctx => {
     organizationId: ctx.params.id,
   });
 
-  ctx.redirect('..');
+  ctx.redirect('.');
 });
 
 router.get('/:orgId/edit/products/:productId/', loggedIn, async ctx => {
@@ -119,6 +120,49 @@ router.post('/:orgId/edit/subscriptions/:subscriptionId', loggedIn, async ctx =>
 
 router.post('/:orgId/edit/subscriptions/:subscriptionId/delete', loggedIn, async ctx => {
   await subscription.delete(ctx.params.subscriptionId);
+  ctx.redirect('..');
+});
+
+// -------------------------------- SHOP
+
+router.get('/:id/edit/shops', loggedIn, async ctx => {
+  await ctx.render('orgs/edit/shops/index', { shops: await shop.getAllOrg(ctx.params.id) });
+});
+
+router.get('/:id/edit/shops/create', loggedIn, async ctx => {
+  await ctx.render('orgs/edit/shops/create', { shops: await shop.getAllOrg(ctx.params.id) });
+});
+
+router.post('/:id/edit/shops/create', loggedIn, async ctx => {
+  const { lat, lng } = ctx.request.body;
+
+  await shop.create({
+    lat,
+    lng,
+    organizationId: ctx.params.id,
+  });
+
+  ctx.redirect('.');
+});
+
+router.get('/:orgId/edit/shops/:shopId/', loggedIn, async ctx => {
+  await ctx.render('orgs/edit/shops/edit', await shop.get(ctx.params.shopId));
+});
+
+router.post('/:orgId/edit/shops/:shopId/', loggedIn, async ctx => {
+  const { lat, lng } = ctx.request.body;
+
+  await shop.update({
+    lat,
+    lng,
+    id: ctx.params.shopId,
+  });
+
+  ctx.redirect('..');
+});
+
+router.post('/:orgId/edit/shops/:shopId/delete', loggedIn, async ctx => {
+  await shop.delete(ctx.params.shopId);
   ctx.redirect('..');
 });
 

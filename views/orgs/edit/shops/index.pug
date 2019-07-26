@@ -6,14 +6,12 @@ block content
       .listing-header
         h2
           a(href='create').float-right + Create
-      each subscription in subscriptions
+      each shop in shops
         .col-lg-4.col-md-6.mb-4
             .card.h-100
-              a(href=`${subscription.id}/`)
+              a(href=`${shop.id}/`)
                 img.card-img-top(src='http://placehold.it/700x400')
               .card-body
                 h4.card-title
-                  a(href=`${subscription.id}/`) #{subscription.name}
-                h5 #{subscription.price}c
-                p.card-text
-                  | #{subscription.description}
+                  a(href=`${shop.id}/`) #{shop.lat}
+                h5 #{shop.lng}

@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  .col-lg-9
+    h1.listing-header Edit shop
+    form.btn-form(method='post', action='delete')
+      button.btn.btn-danger.float-right(type='submit') Delete
+    form.big-form(method='post')
+      input(name='lat', type='text', placeholder='Lat', required, autofocus, value=lat)
+      input(name='lng', type='text', placeholder='Lng', value=lng)
+      button(type='submit') Save

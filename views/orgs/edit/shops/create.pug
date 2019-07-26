@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+  .col-lg-9
+    form.big-form(method='post')
+      h1.listing-header New shop
+      input(name='lat', type='text', placeholder='Lat', required, autofocus)
+      input(name='lng', type='number', placeholder='Lng', required)
+      button(type='submit') Create

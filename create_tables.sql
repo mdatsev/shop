@@ -104,3 +104,11 @@ CREATE TABLE session (
     expiration timestamptz NOT NULL
 );
 
+CREATE TABLE shop (
+    id bigserial PRIMARY KEY,
+    organization_id bigint NOT NULL REFERENCES organization,
+    lat float,
+    lng float,
+    name varchar,
+    description varchar
+)
