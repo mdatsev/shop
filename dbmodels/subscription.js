@@ -6,7 +6,8 @@ const EXPOSED_FIELDS = `
   subscription.period as period,
   item.name as name,
   item.type as type,
-  item.price as price
+  item.price as price,
+  item.organization_id as "organizationId"
 `;
 
 module.exports = {

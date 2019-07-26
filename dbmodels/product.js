@@ -7,7 +7,8 @@ const EXPOSED_FIELDS = `
   item.name as name,
   item.type as type,
   item.price as price,
-  item.description as description
+  item.description as description,
+  item.organization_id as "organizationId"
 `;
 
 module.exports = {

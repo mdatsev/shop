@@ -9,3 +9,17 @@ block body
       a(href='#') Not Implemented
     img.img-fluid.rounded(src='http://placehold.it/700x400')
     p #{description}
+    button.btn.bg-info#display-route Show me how to go to shop
+    table.table.bg-info.d-none#route
+      thead
+        tr
+          th From
+          th To
+          th Price
+      tbody
+    #map
+  script.
+    PAGE_GLOBALS.organizationId = #{organizationId}
+  script(src='/javascripts/product_location.js')
+  script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyANOqIPotmSueWJZBye_1CMVmp3gMm5gMQ&callback=initMap')
+

@@ -13,6 +13,7 @@ const indexRoutes = require('./routes/index.js');
 const organizationsRoutes = require('./routes/organizations.js');
 const productsRoutes = require('./routes/products.js');
 const subscriptionsRoutes = require('./routes/subscriptions.js');
+const ajaxRoutes = require('./routes/ajax.js');
 
 const app = new Koa();
 
@@ -34,6 +35,7 @@ app.use(indexRoutes.routes(), indexRoutes.allowedMethods());
 app.use(organizationsRoutes.routes(), organizationsRoutes.allowedMethods());
 app.use(productsRoutes.routes(), productsRoutes.allowedMethods());
 app.use(subscriptionsRoutes.routes(), subscriptionsRoutes.allowedMethods());
+app.use(ajaxRoutes.routes(), ajaxRoutes.allowedMethods());
 
 app.on('error', (err, ctx) => {
   console.error(err);
