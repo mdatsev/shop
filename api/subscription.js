@@ -12,6 +12,18 @@ module.exports = {
     });
   },
 
+  async update ({ id, name, price, description, specs, period }, apiCtx) {
+    await subscription.update({
+      id,
+      name,
+      description,
+      price,
+      specs,
+      period,
+    });
+    return {};
+  },
+
   async get ({ id }, apiCtx) {
     return subscription.get(id);
   },

@@ -5,7 +5,7 @@ block content
     .row
       .listing-header
         h2
-          a(href='subscriptions/create').float-right + Create
+          a(href='create').float-right + Create
       each subscription in subscriptions
         .col-lg-4.col-md-6.mb-4
             .card.h-100
@@ -13,7 +13,7 @@ block content
                 img.card-img-top(src='http://placehold.it/700x400', alt='')
               .card-body
                 h4.card-title
-                  a(href=`subscriptions/${subscription.id}`) #{subscription.name}
+                  a(href=`${subscription.id}/`) #{subscription.name}
                 h5 #{subscription.price}c
                 p.card-text
                   | #{subscription.description}

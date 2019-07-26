@@ -46,6 +46,28 @@ module.exports = {
     return result.rows[0];
   },
 
+  async update ({ id, name, price, description, specs, availableQuantity }) {
+    return db.doTransaction(async client => {
+      const result = await client.query(`
+        UPDATE product
+        SET
+          available_quantity = $availableQuantity
+        WHERE id = $id
+        RETURNING item_id`, {
+        availableQuantity,
+        id,
+      });
+
+      await item.update({
+        id: result.rows[0].item_id,
+        name,
+        price,
+        specs,
+        description,
+      }, client);
+    });
+  },
+
   async delete (id) {
     await db.doTransaction(async client => {
       const result = await client.query(`

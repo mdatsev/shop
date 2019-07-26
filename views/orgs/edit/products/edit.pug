@@ -1,14 +1,13 @@
 extends ../layout
 
-block head
-  base(href='..')
-
 block content
   .col-lg-9
-    form(method='post')
-      h1.listing-header Edit product #{name}
+    h1.listing-header Edit product #{name}
+    form.btn-form(method='post', action='delete')
+      button.btn.btn-danger.float-right(type='submit') Delete
+    form.big-form(method='post')
       input(name='name', type='text', placeholder='Name', required, autofocus, value=name)
       input(name='description', type='text', placeholder='Description', value=description)
       input(name='price', type='number', placeholder='Price', required, value=price)
       input(name='availableQuantity', type='text', placeholder='Available quantity', value=availableQuantity)
-      //- button(type='submit') Save
+      button(type='submit') Save

@@ -16,6 +16,21 @@ module.exports = {
     return result.rows[0].id;
   },
 
+  async update ({ id, name, description, specs, price }, client) {
+    await db.query(`
+      UPDATE item
+      SET
+        name = $name,
+        price = $price,
+        description = $description
+      WHERE id = $id`, {
+      name,
+      price,
+      description,
+      id,
+    }, client);
+  },
+
   async delete (id, client) {
     await db.query(`
       DELETE FROM item

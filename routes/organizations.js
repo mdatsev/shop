@@ -47,11 +47,30 @@ router.post('/:id/edit/products/create', loggedIn, async ctx => {
     organizationId: ctx.params.id,
   });
 
-  ctx.redirect('.');
+  ctx.redirect('..');
 });
 
-router.get('/:orgId/edit/products/:productId', loggedIn, async ctx => {
+router.get('/:orgId/edit/products/:productId/', loggedIn, async ctx => {
   await ctx.render('orgs/edit/products/edit', await product.get(ctx.params.productId));
+});
+
+router.post('/:orgId/edit/products/:productId/', loggedIn, async ctx => {
+  const { name, description, price, availableQuantity } = ctx.request.body;
+
+  await product.update({
+    name,
+    description,
+    price,
+    availableQuantity,
+    id: ctx.params.productId,
+  });
+
+  ctx.redirect('..');
+});
+
+router.post('/:orgId/edit/products/:productId/delete', loggedIn, async ctx => {
+  await product.delete(ctx.params.productId);
+  ctx.redirect('..');
 });
 
 router.get('/:id/edit/subscriptions', loggedIn, async ctx => {
@@ -82,6 +101,25 @@ router.get('/:orgId/edit/subscriptions/:subscriptionId', loggedIn, async ctx => 
   subscr.period = Object.entries(subscr.period).map(([duration, number]) => `${number} ${duration}`).join(' ');
 
   await ctx.render('orgs/edit/subscriptions/edit', subscr);
+});
+
+router.post('/:orgId/edit/subscriptions/:subscriptionId', loggedIn, async ctx => {
+  const { name, description, price, period } = ctx.request.body;
+
+  await subscription.update({
+    name,
+    description,
+    price,
+    period,
+    id: ctx.params.subscriptionId,
+  });
+
+  ctx.redirect('..');
+});
+
+router.post('/:orgId/edit/subscriptions/:subscriptionId/delete', loggedIn, async ctx => {
+  await subscription.delete(ctx.params.subscriptionId);
+  ctx.redirect('..');
 });
 
 module.exports = router;

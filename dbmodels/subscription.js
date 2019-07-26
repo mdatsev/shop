@@ -45,6 +45,28 @@ module.exports = {
     return result.rows[0];
   },
 
+  async update ({ id, name, price, description, specs, period }) {
+    return db.doTransaction(async client => {
+      const result = await client.query(`
+        UPDATE subscription
+        SET
+          period = $period
+        WHERE id = $id
+        RETURNING item_id`, {
+        period,
+        id,
+      });
+
+      await item.update({
+        id: result.rows[0].item_id,
+        name,
+        price,
+        specs,
+        description,
+      }, client);
+    });
+  },
+
   async delete (id) {
     await db.doTransaction(async client => {
       const result = await client.query(`

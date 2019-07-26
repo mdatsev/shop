@@ -1,7 +1,7 @@
-extends form
+extends layout
 
-block content
-    form.main-form(method='post')
+block body
+    form.big-form.main-form(method='post')
         h1.title Please sign in
         input(name='email', type='email', placeholder='Email address', required, autofocus)
         input(name='password', type='password', placeholder='Password', required)

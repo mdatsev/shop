@@ -22,11 +22,16 @@ body {
 	margin: auto;
 }
 
-form {
+.btn-form {
+    overflow: auto;
+}
+
+.big-form {
     .title {
         @extend .h3, .mb-3, .font-weight-normal;
     }
     input {
+        margin-top: 10px;
         margin-bottom: 10px;
     }
     input[type="email"] {
