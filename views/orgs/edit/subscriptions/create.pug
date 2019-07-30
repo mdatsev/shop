@@ -6,6 +6,6 @@ block content
       h1.listing-header New product
       input(name='name', type='text', placeholder='Name', required, autofocus)
       input(name='description', type='text', placeholder='Description', required)
-      input(name='price', type='number', placeholder='Price', required)
+      input(name='price', type='number', min='1', placeholder='Price', required)
       input(name='period', type='text', placeholder='period', required)
       button(type='submit') Create

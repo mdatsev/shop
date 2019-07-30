@@ -3,5 +3,8 @@
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
     "newline-after-var": ["error", "always"]
+  },
+  "globals": {
+    "BigInt": "readonly"
   }
 }

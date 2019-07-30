@@ -1,3 +1,4 @@
+const assert = require('../util/assert.js');
 const db = require('../db.js');
 const item = require('./item.js');
 
@@ -11,8 +12,13 @@ const EXPOSED_FIELDS = `
   item.organization_id as "organizationId"
 `;
 
+function validate ({ availableQuantity }) {
+  assert(BigInt(availableQuantity) > 0, 'available quantity must be greater than 0');
+}
+
 module.exports = {
   async create ({ name, price, description, specs, availableQuantity, organizationId }) {
+    validate({ availableQuantity });
     return db.doTransaction(async client => {
       const itemId = await item.create({
         name,
@@ -48,6 +54,7 @@ module.exports = {
   },
 
   async update ({ id, name, price, description, specs, availableQuantity }) {
+    validate({ availableQuantity });
     return db.doTransaction(async client => {
       const result = await client.query(`
         UPDATE product

@@ -1,7 +1,16 @@
+const assert = require('../util/assert.js');
 const db = require('../db.js');
+
+function validate ({ lat, lng }) {
+  assert(lat >= -90, 'latitude should be at least -90');
+  assert(lat <= 90, 'latitude should be at most 90');
+  assert(lng >= -180, 'longtitude should be at least -180');
+  assert(lng <= 180, 'longtitude should be at most 180');
+}
 
 module.exports = {
   async create ({ lat, lng, organizationId }) {
+    validate({ lat, lng });
     const result = await db.query(`
       INSERT INTO shop (lat, lng, organization_id)
       VALUES ($lat, $lng, $organizationId)
@@ -15,6 +24,7 @@ module.exports = {
   },
 
   async update ({ id, lat, lng }) {
+    validate({ lat, lng });
     await db.query(`
       UPDATE shop
       SET

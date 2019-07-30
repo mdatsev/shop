@@ -1,7 +1,13 @@
+const assert = require('../util/assert.js');
 const db = require('../db.js');
+
+function validate ({ name }) {
+  assert(name, 'name must be present');
+}
 
 module.exports = {
   async create ({ name, ownerId }) {
+    validate({ name });
     const result = await db.query(`
       INSERT INTO organization (name, owner_id)
       VALUES ($name, $ownerId)

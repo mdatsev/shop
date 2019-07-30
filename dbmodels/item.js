@@ -1,7 +1,14 @@
+const assert = require('../util/assert.js');
 const db = require('../db.js');
+
+function validate ({ price, name }) {
+  assert(BigInt(price) > 0, 'price must be greater than 0');
+  assert(name, 'name must be present');
+}
 
 module.exports = {
   async create ({ name, description, organizationId, type, specs, price }, client) {
+    validate({ price, name });
     const result = await db.query(`
       INSERT INTO item (name, organization_id, type, price, description)
       VALUES ($name, $organizationId, $type, $price, $description)
@@ -17,6 +24,7 @@ module.exports = {
   },
 
   async update ({ id, name, description, specs, price }, client) {
+    validate({ price, name });
     await db.query(`
       UPDATE item
       SET

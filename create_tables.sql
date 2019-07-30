@@ -28,7 +28,7 @@ CREATE TABLE item (
     description varchar,
     organization_id bigint NOT NULL REFERENCES organization,
     type item_type NOT NULL,
-    price bigint NOT NULL
+    price bigint NOT NULL CHECK (price > 0)
 );
 
 CREATE TABLE subscription (
@@ -40,7 +40,7 @@ CREATE TABLE subscription (
 CREATE TABLE product (
     id bigserial PRIMARY KEY,
     item_id bigint UNIQUE NOT NULL REFERENCES item,
-    available_quantity bigint NOT NULL
+    available_quantity bigint NOT NULL CHECK (available_quantity > 0)
 );
 
 CREATE TABLE item_spec (

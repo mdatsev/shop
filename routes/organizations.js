@@ -123,8 +123,6 @@ router.post('/:orgId/edit/subscriptions/:subscriptionId/delete', loggedIn, async
   ctx.redirect('..');
 });
 
-// -------------------------------- SHOP
-
 router.get('/:id/edit/shops', loggedIn, async ctx => {
   await ctx.render('orgs/edit/shops/index', { shops: await shop.getAllOrg(ctx.params.id) });
 });

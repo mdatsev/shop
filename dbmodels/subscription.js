@@ -10,6 +10,10 @@ const EXPOSED_FIELDS = `
   item.organization_id as "organizationId"
 `;
 
+// function validate ({ period }) {
+// // todo
+// }
+
 module.exports = {
   async create ({ name, price, description, specs, period, organizationId }) {
     return db.doTransaction(async client => {

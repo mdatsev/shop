@@ -4,6 +4,6 @@ block content
   .col-lg-9
     form.big-form(method='post')
       h1.listing-header New shop
-      input(name='lat', type='text', placeholder='Lat', required, autofocus)
-      input(name='lng', type='number', placeholder='Lng', required)
+      input(name='lat', type='number', min='-90', max='90', placeholder='Lat', required, autofocus)
+      input(name='lng', type='number', min='-180', max='180', placeholder='Lng', required)
       button(type='submit') Create
