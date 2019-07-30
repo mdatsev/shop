@@ -3,6 +3,7 @@ extends ../layout
 block content
   .col-lg-9
     h1.listing-header Edit subscription
+    a(href='/subscriptions/' + id + '/show') View as customer
     form.btn-form(method='post', action='delete')
       button.btn.btn-danger.float-right(type='submit') Delete
     form.big-form(method='post')
