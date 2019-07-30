@@ -10,6 +10,7 @@ block body
     img.img-fluid.rounded(src='http://placehold.it/700x400')
     p #{description}
     button.btn.bg-info#display-route Show me how to go to shop
+    #map.d-none
     table.table.bg-info.d-none#route
       thead
         tr
@@ -17,7 +18,6 @@ block body
           th To
           th Price
       tbody
-    #map
   script.
     PAGE_GLOBALS.organizationId = #{organizationId}
   script(src='/javascripts/product_location.js')
