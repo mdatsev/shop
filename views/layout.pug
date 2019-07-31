@@ -5,35 +5,37 @@ html
       PAGE_GLOBALS = {}
     block head
     link(rel='stylesheet', href='/stylesheets/main.css')
-    script(src='/javascripts/utils.js')
-  body
-    // Navbar
-    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
-      .container
-        a.navbar-brand(href='/') Shop Platform
-        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarResponsive')
-          span.navbar-toggler-icon
-        #navbarResponsive.collapse.navbar-collapse
-          ul.navbar-nav.ml-auto
-            li.nav-item
-              a.nav-link(href='/') Home
-            if loggedIn
-              li.nav-item
-                a.nav-link(href='/orgs') Organizations
-              li.nav-item
-                form(method='post', action='/logout')
-                  button(type='submit') Logout
-            else
-              li.nav-item
-                a.nav-link(href='/login') Login
-              li.nav-item
-                a.nav-link(href='/register') Register
-            li.nav-item
-              a.nav-link(href='/about') About
-    // Body
-    .mb-5
-      block body
-    // Bootstrap stuff
     script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js', integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
     script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
+    script(src='/javascripts/utils.js')
+    script(src='/javascripts/basket.js')
+  body
+    block body
+      .body
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+          .container
+            a.navbar-brand(href='/') Shop Platform
+            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarResponsive')
+              span.navbar-toggler-icon
+            #navbarResponsive.collapse.navbar-collapse
+              ul.navbar-nav.ml-auto
+                li.nav-item
+                  a.nav-link(href='/') Home
+                li.nav-item
+                  input#basket-button(type='image', src='/images/basket.svg', data-toggle='popover', onload='initBasketButton()')
+                if loggedIn
+                  li.nav-item
+                    a.nav-link(href='/orgs') Organizations
+                  li.nav-item
+                    form(method='post', action='/logout')
+                      button(type='submit') Logout
+                else
+                  li.nav-item
+                    a.nav-link(href='/login') Login
+                  li.nav-item
+                    a.nav-link(href='/register') Register
+                li.nav-item
+                  a.nav-link(href='/about') About
+        .mb-5
+          block content

@@ -1,6 +1,6 @@
 extends ../layout
 
-block body
+block content
   .center.col-lg-9
     h1.mt-4 #{name}
     p.lead Price: #{price}c
@@ -10,6 +10,7 @@ block body
     img.img-fluid.rounded(src='http://placehold.it/700x400')
     p #{description}
     button.btn.bg-info#display-route Show me how to go to shop
+    button.mx-2.btn.btn-success(onclick=`addToBasket("product", ${id})`) + Add to basket
     #map.d-none
     table.table.bg-info.d-none#route
       thead
@@ -17,6 +18,7 @@ block body
           th From
           th To
           th Price
+          th Ticket
       tbody
   script.
     PAGE_GLOBALS.organizationId = #{organizationId}

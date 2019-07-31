@@ -17,7 +17,7 @@ function validate ({ availableQuantity }) {
 }
 
 module.exports = {
-  async create ({ name, price, description, specs, availableQuantity, organizationId }) {
+  async create ({ name, price, description, specs, availableQuantity, organizationId, ...rest }) {
     validate({ availableQuantity });
     return db.doTransaction(async client => {
       const itemId = await item.create({
