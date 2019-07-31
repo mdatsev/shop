@@ -11,8 +11,9 @@ module.exports = {
       ctx.auth = {};
       const authUserId = ctx.cookies.get('userId');
       const sessionSecret = ctx.cookies.get('sessionSecret');
+      const isVerified = await session.verify({ userId: authUserId, secret: sessionSecret });
 
-      if (authUserId && sessionSecret && await session.verify({ userId: authUserId, secret: sessionSecret })) {
+      if (authUserId && sessionSecret && isVerified) {
         ctx.auth.userId = authUserId;
         ctx.auth.loggedIn = true;
         ctx.auth.userName = (await user.get(authUserId)).name;
@@ -20,14 +21,14 @@ module.exports = {
 
       ctx.auth.login = async (loginUserId, remember) => {
         if (remember) {
-          const expires = getDefaultExpiration();
+          const expirationDate = getDefaultExpiration();
           const sessionSecret = await session.create({
             userId: loginUserId,
-            expirationDate: expires,
+            expirationDate,
           });
 
-          ctx.cookies.set('sessionSecret', sessionSecret, { expires });
-          ctx.cookies.set('userId', loginUserId, { expires });
+          ctx.cookies.set('sessionSecret', sessionSecret, { expirationDate });
+          ctx.cookies.set('userId', loginUserId, { expirationDate });
         } else {
           const sessionSecret = await session.create({
             userId: loginUserId,

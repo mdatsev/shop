@@ -86,6 +86,14 @@ buttonElement.addEventListener('click', () => {
       const from = document.createElement('td');
       const to = document.createElement('td');
       const weather = document.createElement('td');
+      const ticketTd = document.createElement('td');
+      const ticket = document.createElement('a');
+
+      ticket.classList.add('text-dark');
+      ticketTd.appendChild(ticket);
+
+      ticket.href = `/products/${segment.shopId}/show`;
+      ticket.innerText = segment.airlineId + segment.shopId;
 
       coords.push({ lat: segment.latFrom, lng: segment.lngFrom });
       coords.push({ lat: segment.latTo, lng: segment.lngTo });
@@ -95,6 +103,7 @@ buttonElement.addEventListener('click', () => {
       row.appendChild(from);
       row.appendChild(to);
       row.appendChild(weather);
+      row.appendChild(ticketTd);
       tbody.appendChild(row);
     }
 

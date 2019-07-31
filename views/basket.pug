@@ -1,0 +1,18 @@
+extends layout
+
+block body
+  h1 Basket
+  table.table
+    thead
+      tr
+        th Product
+        th Price
+        th Remove
+    tbody
+      each product in products
+        tr
+          td 
+            a(href=`/${product.type}s/${product.id}/show`, target="_parent") #{product.name}
+          td #{product.price}c
+          td
+            button.mx-2.btn.btn-danger(onclick=`parent.removeFromBasket(${product.basketId})`) Remove
