@@ -20,8 +20,10 @@ block content
           th Price
           th Ticket
       tbody
+    button.mx-2.btn.btn-info.float-right.mb-2.d-none#tickets-to-basket + Add all to basket
   script.
     PAGE_GLOBALS.organizationId = #{organizationId}
   script(src='/javascripts/product_location.js')
   script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyANOqIPotmSueWJZBye_1CMVmp3gMm5gMQ&callback=initMap')
+
 

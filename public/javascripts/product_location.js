@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
 function getShops () {
@@ -60,6 +61,8 @@ function displayRoute (coords) {
 }
 
 const buttonElement = document.getElementById('display-route');
+const ticketsToBasketButton = document.getElementById('tickets-to-basket')
+const tickets = [];
 
 buttonElement.addEventListener('click', () => {
   navigator.geolocation.getCurrentPosition(async pos => {
@@ -80,7 +83,7 @@ buttonElement.addEventListener('click', () => {
     const coords = [];
     const shops = await getShops();
     const route = await getRoute(from, shops);
-
+    
     for (const segment of route) {
       const row = document.createElement('tr');
       const from = document.createElement('td');
@@ -89,12 +92,13 @@ buttonElement.addEventListener('click', () => {
       const ticketTd = document.createElement('td');
       const ticket = document.createElement('a');
 
+      tickets.push(segment.shopId);
       ticket.classList.add('text-dark');
       ticketTd.appendChild(ticket);
 
       ticket.href = `/products/${segment.shopId}/show`;
       ticket.innerText = segment.airlineId + segment.shopId;
-
+      
       coords.push({ lat: segment.latFrom, lng: segment.lngFrom });
       coords.push({ lat: segment.latTo, lng: segment.lngTo });
       from.innerText = segment.from;
@@ -106,7 +110,13 @@ buttonElement.addEventListener('click', () => {
       row.appendChild(ticketTd);
       tbody.appendChild(row);
     }
-
+    ticketsToBasketButton.classList.remove('d-none');
     displayRoute(coords);
   });
+});
+
+ticketsToBasketButton.addEventListener('click', () => {
+  for (const ticket of tickets) {
+    addToBasket('product', ticket);
+  }
 });
