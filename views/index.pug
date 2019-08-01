@@ -4,21 +4,39 @@ block content
   .container
     .row
       .col-lg-3
-        h1.my-4 Sidebar
-        .list-group
-          .list-group-item(href='#') Item 1
-          .list-group-item(href='#') Item 2
-          .list-group-item(href='#') Item 3
+        h1.my-4 Filters
+        form.compact-form(method='get')
+          label Order
+            select(name='order')
+              option(value='created_at', selected=(query.order=='created_at')) Created at
+              option(value='price' selected=(query.order=='price')) Price
+          label
+            input(type='radio', name='ascending', value='asc', checked=(query.ascending=='asc'))
+            | Ascending
+          label
+            input(type='radio', name='ascending', value='desc', checked=(query.ascending=='desc'))
+            | Descending
+          //- label Placeholder
+          //-   input(name='name', type='text', placeholder='Placeholder')
+          //- label
+          //-   input(name='name', type='checkbox')
+          //-   | Placeholder
+          button(type='submit') Filter
       .col-lg-9
-          .row
-            each item in items
-              .col-lg-4.col-md-6.mb-4
-                  .card.h-100
-                    a(href=`/${item.type}s/${item.id}/show`)
-                      img.card-img-top(src='http://placehold.it/700x400', alt='')
-                    .card-body
-                      h4.card-title
-                        a(href=`/${item.type}s/${item.id}/show`) #{item.name}
-                      h5 #{item.price}c
-                      p.card-text
-                        | #{item.description}
+        .row
+          each item in items
+            .col-lg-4.col-md-6.mb-4
+                .card.h-100
+                  a(href=`/${item.type}s/${item.id}/show`)
+                    img.card-img-top(src='http://placehold.it/700x400', alt='')
+                  .card-body
+                    h4.card-title
+                      a(href=`/${item.type}s/${item.id}/show`) #{item.name}
+                    h5 #{item.price}c
+                    p.card-text
+                      | #{item.description}
+        nav
+          ul.pagination
+            for i in pages
+              li.page-item(class=(pageNum === i ? 'active' : ''))
+                a.page-link(href='?pageNum=' + i) #{i}

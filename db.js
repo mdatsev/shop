@@ -49,4 +49,7 @@ module.exports = {
       return callback(client);
     }
   },
+
+  escapeIdentifier: identfier =>
+    '"' + identfier.replace(/"/g, '""') + '"',
 };

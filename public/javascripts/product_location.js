@@ -39,7 +39,6 @@ function getRoute (from, to) {
 const mapElement = document.getElementById('map');
 let map;
 
-// eslint-disable-next-line no-unused-vars
 function initMap () {
   map = new google.maps.Map(mapElement, {
     zoom: 3,
@@ -61,7 +60,7 @@ function displayRoute (coords) {
 }
 
 const buttonElement = document.getElementById('display-route');
-const ticketsToBasketButton = document.getElementById('tickets-to-basket')
+const ticketsToBasketButton = document.getElementById('tickets-to-basket');
 const tickets = [];
 
 buttonElement.addEventListener('click', () => {
@@ -83,7 +82,7 @@ buttonElement.addEventListener('click', () => {
     const coords = [];
     const shops = await getShops();
     const route = await getRoute(from, shops);
-    
+
     for (const segment of route) {
       const row = document.createElement('tr');
       const from = document.createElement('td');
@@ -98,7 +97,7 @@ buttonElement.addEventListener('click', () => {
 
       ticket.href = `/products/${segment.shopId}/show`;
       ticket.innerText = segment.airlineId + segment.shopId;
-      
+
       coords.push({ lat: segment.latFrom, lng: segment.lngFrom });
       coords.push({ lat: segment.latTo, lng: segment.lngTo });
       from.innerText = segment.from;

@@ -2,6 +2,12 @@
 
 $background_color_1: #f5f5f5;
 
+label {
+    input {
+        margin-top: 1px;
+    }
+}
+
 .popover {
     width: 100%;
     max-width: 600px;
@@ -58,6 +64,12 @@ iframe {
         margin-top: 10px;
         margin-bottom: 10px;
     }
+    label {
+        width: 100%;
+    }
+    select {
+        @extend .form-control;
+    }
     input[type="email"] {
         @extend .form-control;
     }
@@ -73,4 +85,11 @@ iframe {
     button[type="submit"] {
         @extend .btn, .btn-lg, .btn-primary, .btn-block;
     }
+}
+
+.compact-form {
+    @extend .big-form;
+    input {
+        margin: 1px;
+    }   
 }

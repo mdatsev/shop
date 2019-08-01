@@ -28,7 +28,8 @@ CREATE TABLE item (
     description varchar,
     organization_id bigint NOT NULL REFERENCES organization,
     type item_type NOT NULL,
-    price bigint NOT NULL CHECK (price > 0)
+    price bigint NOT NULL CHECK (price > 0),
+    created_at timestamp DEFAULT NOW()
 );
 
 CREATE TABLE subscription (

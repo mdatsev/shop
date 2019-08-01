@@ -47,7 +47,7 @@ module.exports = {
     }, client);
   },
 
-  async getAll (limit) {
+  async getAll ({ limit, offset, order, ascending }) {
     const result = await db.query(`
       SELECT
         COALESCE(p.id, s.id) as id,
@@ -60,8 +60,11 @@ module.exports = {
       FROM item i
       LEFT JOIN product p ON p.item_id = i.id
       LEFT JOIN subscription s ON s.item_id = i.id
-      LIMIT $limit`, {
+      ORDER BY ${db.escapeIdentifier(order)} ${ascending ? 'ASC' : 'DESC'}, i.id
+      LIMIT $limit
+      OFFSET $offset`, {
       limit,
+      offset,
     });
 
     return result.rows;

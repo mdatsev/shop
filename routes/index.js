@@ -1,5 +1,5 @@
 const router = new (require('koa-router'))();
-const { loggedIn, notLoggedIn } = require('../middleware/user_auth.js');
+const { notLoggedIn } = require('../middleware/user_auth.js');
 const user = require('../dbmodels/user.js');
 const item = require('../dbmodels/item.js');
 
@@ -32,10 +32,6 @@ router.post('/register', notLoggedIn, async ctx => {
   ctx.redirect('/');
 });
 
-router.get('/private', loggedIn, ctx => ctx.render('private', { name: ctx.auth.userName }));
-
-router.get('/', async ctx => ctx.render('index', { items: await item.getAll() }));
-
 router.get('/basket', async ctx => {
   const items = JSON.parse(ctx.query.items);
   const products = [];
@@ -46,6 +42,25 @@ router.get('/basket', async ctx => {
     }
   }
   await ctx.render('basket', { products });
+});
+
+router.get('/', async ctx => {
+  let { perPage = 15, pageNum = 1, order = 'created_at', ascending = 'desc' } = ctx.query;
+
+  // convert types
+  pageNum = +pageNum;
+  perPage = +perPage;
+  ascending = ascending === 'asc';
+
+  const pageIndex = pageNum - 1; // 0 indexed
+  const offset = pageIndex * perPage;
+
+  const items = await item.getAll({ limit: perPage, offset, order, ascending });
+
+  const pages = [...Array(11).keys()] // number of displayed page buttons
+    .map(i => +pageNum + i - Math.min(5, pageIndex)); // center on current but no negative
+
+  await ctx.render('index', { items, pageNum, pages, query: ctx.query });
 });
 
 module.exports = router;
