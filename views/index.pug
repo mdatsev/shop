@@ -6,15 +6,16 @@ block content
       .col-lg-3
         h1.my-4 Filters
         form.compact-form(method='get')
-          label Order
-            select(name='order')
-              option(value='created_at', selected=(query.order=='created_at')) Created at
-              option(value='price' selected=(query.order=='price')) Price
+          label Sort
+            select(name='sort')
+              option(value='created_at', selected=(sort=='created_at')) Created at
+              option(value='price' selected=(sort=='price')) Price
+              option(value='name' selected=(sort=='name')) Name
           label
-            input(type='radio', name='ascending', value='asc', checked=(query.ascending=='asc'))
+            input(type='radio', name='ascOrDesc', value='asc', checked=(ascOrDesc=='asc'))
             | Ascending
           label
-            input(type='radio', name='ascending', value='desc', checked=(query.ascending=='desc'))
+            input(type='radio', name='ascOrDesc', value='desc', checked=(ascOrDesc=='desc'))
             | Descending
           //- label Placeholder
           //-   input(name='name', type='text', placeholder='Placeholder')
