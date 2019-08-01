@@ -2,8 +2,8 @@ extends layout
 
 block main-content
   .col-lg-9
-    //- form.btn-form(method='post', action='delete')
-    //-   button.btn.btn-danger.float-right(type='submit') Delete
+    form.btn-form(method='post', action='delete')
+      button.btn.btn-danger.float-right(type='submit') Delete
     form.big-form(method='post')
       input(name='name', type='text', placeholder='Name', required, autofocus, value=name)
       button(type='submit') Save

@@ -26,7 +26,7 @@ CREATE TABLE item (
     id bigserial PRIMARY KEY,
     name varchar NOT NULL,
     description varchar,
-    organization_id bigint NOT NULL REFERENCES organization,
+    organization_id bigint NOT NULL REFERENCES organization ON DELETE CASCADE,
     type item_type NOT NULL,
     price bigint NOT NULL CHECK (price > 0),
     created_at timestamp DEFAULT NOW()
@@ -34,13 +34,13 @@ CREATE TABLE item (
 
 CREATE TABLE subscription (
     id bigserial PRIMARY KEY,
-    item_id bigint UNIQUE NOT NULL REFERENCES item,
+    item_id bigint UNIQUE NOT NULL REFERENCES item ON DELETE CASCADE,
     period interval NOT NULL
 );
 
 CREATE TABLE product (
     id bigserial PRIMARY KEY,
-    item_id bigint UNIQUE NOT NULL REFERENCES item,
+    item_id bigint UNIQUE NOT NULL REFERENCES item ON DELETE CASCADE,
     available_quantity bigint NOT NULL CHECK (available_quantity > 0)
 );
 
@@ -107,7 +107,7 @@ CREATE TABLE session (
 
 CREATE TABLE shop (
     id bigserial PRIMARY KEY,
-    organization_id bigint NOT NULL REFERENCES organization,
+    organization_id bigint NOT NULL REFERENCES organization ON DELETE CASCADE,
     lat float,
     lng float,
     name varchar,

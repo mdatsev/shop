@@ -60,7 +60,7 @@ function removeFromBasket (basketId) {
 
 function updateBasketPreview () {
   iframe.attr('src',
-    `http://localhost:3000/basket?items=${
+    `/basket?items=${
       encodeURIComponent(getItemsRaw())}`);
 }
 

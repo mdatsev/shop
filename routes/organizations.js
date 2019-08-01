@@ -174,6 +174,12 @@ const orgsRouter = new Router({ prefix: '/orgs' })
     ctx.redirect('/orgs');
   })
 
+  .post('/:orgId/edit/delete', authOrg, async ctx => {
+    await organization.delete(ctx.params.orgId);
+
+    ctx.redirect('/orgs');
+  })
+
   .use('/:orgId/edit/products', authOrg, productsRouter.routes(), productsRouter.allowedMethods())
   .use('/:orgId/edit/subscriptions', authOrg, subscriptionsRouter.routes(), subscriptionsRouter.allowedMethods())
   .use('/:orgId/edit/shops', authOrg, shopsRouter.routes(), shopsRouter.allowedMethods());

@@ -41,6 +41,14 @@ module.exports = {
     });
   },
 
+  async delete (id) {
+    await db.query(`
+      DELETE FROM organization
+      WHERE id = $id`, {
+      id,
+    });
+  },
+
   async getSecret (id) {
     const result = await db.query(`
       SELECT secret

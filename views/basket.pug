@@ -1,5 +1,10 @@
 extends layout
 
+block head
+  meta(name='viewport', content='width=device-width, initial-scale=1')
+  script(src='https://js.stripe.com/v3/')
+  link(rel='stylesheet', href='/stylesheets/checkout.css')
+
 block body
   h1 Basket
   table.table
@@ -12,7 +17,17 @@ block body
       each product in products
         tr
           td 
-            a(href=`/${product.type}s/${product.id}/show`, target="_parent") #{product.name}
+            a(href=`/${product.type}s/${product.id}/show`, target='_parent') #{product.name}
           td #{product.price}c
           td
             button.mx-2.btn.btn-danger(onclick=`parent.removeFromBasket(${product.basketId})`) Remove
+      tr
+        th Total:
+        th #{total.price}
+        th
+  h2 Checkout now
+  .example.example3
+    input.form-control#cardholder-name(type='text', placeholder='Full name')
+    #card-element
+    button#card-button Submit Payment
+  script(src='/javascripts/checkout.js')

@@ -35,13 +35,18 @@ router.post('/register', notLoggedIn, async ctx => {
 router.get('/basket', async ctx => {
   const items = JSON.parse(ctx.query.items);
   const products = [];
+  const total = { price: 0 };
 
   for (const { type, id, basketId } of items) {
     if (type === 'product') {
-      products.push({ basketId, ...await product.get(id) });
+      const prod = await product.get(id);
+
+      prod.basketId = basketId;
+      total.price += +prod.price;
+      products.push(prod);
     }
   }
-  await ctx.render('basket', { products });
+  await ctx.render('basket', { products, total });
 });
 
 router.get('/', async ctx => {

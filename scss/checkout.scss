@@ -1,0 +1,157 @@
+#card-element {
+  margin: 20px 10px 20px 10px;
+}
+
+//colors
+$color_blue_bayoux_approx: #525f7f;
+$color_bermuda_gray_approx: #7488aa;
+$color_fiord_approx: #424770;
+$color_white_lilac_approx: #f6f9fc;
+$color_bittersweet_approx: #fa755a;
+$color_mischka_approx: #cfd7df;
+$white: #fff;
+$color_rock_blue_approx: #9bacc8;
+$color_goldenrod_approx: #fcd669;
+$color_saffron_mango_approx: #f5be58;
+
+//fonts
+$font_0: Quicksand;
+$font_1: Open Sans;
+$font_2: Segoe UI;
+$font_3: sans-serif;
+
+//@extend-elements
+//original selectors
+//.example.example3 input, .example.example3 button
+%extend_1 {
+	appearance: none;
+	outline: none;
+	border-style: none;
+}
+
+
+.example.example3 {
+  background-color: transparent;
+  padding: 20px;
+  
+	* {
+		font-family: $font_0, $font_1, $font_2, $font_3;
+		font-size: 16px;
+		font-weight: 600;
+	}
+	.fieldset {
+		// margin: 0 15px 30px;
+		padding: 0;
+		border-style: none;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-between;
+	}
+	.field {
+		padding: 10px 20px 11px;
+		background-color: $color_bermuda_gray_approx;
+		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+		border-radius: 20px;
+		width: 100%;
+		&.half-width {
+			width: calc(50% -(5px / 2));
+		}
+		&.third-width {
+			width: calc(33% -(5px / 3));
+		}
+		&.focus {
+			color: $color_fiord_approx;
+			background-color: $color_white_lilac_approx;
+			&:-ms-input-placeholder {
+				color: $color_mischka_approx;
+			}
+		}
+		&:focus {
+			color: $color_fiord_approx;
+			background-color: $color_white_lilac_approx;
+			&:-ms-input-placeholder {
+				color: $color_mischka_approx;
+			}
+		}
+		&.invalid {
+			background-color: $color_bittersweet_approx;
+			&.focus {
+				background-color: $color_white_lilac_approx;
+			}
+		}
+		&.focus::-webkit-input-placeholder {
+			color: $color_mischka_approx;
+		}
+		&:focus::-webkit-input-placeholder {
+			color: $color_mischka_approx;
+		}
+		&.focus::-moz-placeholder {
+			color: $color_mischka_approx;
+		}
+		&:focus::-moz-placeholder {
+			color: $color_mischka_approx;
+		}
+		+ .field {
+			margin-top: 6px;
+		}
+	}
+	input {
+		width: calc(100% - 30px);
+    // margin: 15px;
+	}
+	button {
+		@extend %extend_1;
+		display: block;
+		width: calc(100% - 30px);
+		height: 40px;
+    // margin: 0 15px;
+		background-color: $color_goldenrod_approx;
+		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+		border-radius: 20px;
+		color: $color_blue_bayoux_approx;
+		font-weight: 600;
+		text-transform: uppercase;
+		cursor: pointer;
+		&:active {
+			background-color: $color_saffron_mango_approx;
+		}
+	}
+	input::-webkit-input-placeholder {
+		color: $color_rock_blue_approx;
+	}
+	input::-moz-placeholder {
+		color: $color_rock_blue_approx;
+	}
+	.error {
+		svg {
+			.base {
+				fill: $color_bittersweet_approx;
+			}
+			.glyph {
+				fill: $white;
+			}
+		}
+		.message {
+			color: $white;
+		}
+	}
+	.success {
+		.icon {
+			.border {
+				stroke: $color_goldenrod_approx;
+			}
+			.checkmark {
+				stroke: $white;
+			}
+		}
+		.title {
+			color: $white;
+		}
+		.message {
+			color: $color_rock_blue_approx;
+		}
+		.reset path {
+			fill: $white;
+		}
+	}
+}
