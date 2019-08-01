@@ -1,4 +1,7 @@
-const router = new (require('koa-router'))({ prefix: '/orgs' });
+const Router = require('koa-router');
+
+const assert = require('../util/assert');
+
 const { loggedIn } = require('../middleware/user_auth.js');
 
 const organization = require('../dbmodels/organization.js');
@@ -6,162 +9,181 @@ const product = require('../dbmodels/product.js');
 const subscription = require('../dbmodels/subscription.js');
 const shop = require('../dbmodels/shop.js');
 
-router.get('/', loggedIn, async ctx =>
-  ctx.render('orgs/index', {
-    orgs: await organization.getAllOfUser(ctx.auth.userId),
+const productsRouter = new Router()
+
+  .get('/', async ctx => {
+    await ctx.render('orgs/edit/products/index', { products: await product.getAllOrg(ctx.params.orgId) });
   })
-);
 
-router.get('/create', loggedIn, ctx => ctx.render('orgs/create'));
-router.post('/create', loggedIn, async ctx => {
-  const { name } = ctx.request.body;
+  .get('/create', async ctx => {
+    await ctx.render('orgs/edit/products/create', { products: await product.getAllOrg(ctx.params.orgId) });
+  })
+  .post('/create', async ctx => {
+    const { name, description, price, availableQuantity } = ctx.request.body;
 
-  const id = await organization.create({ name, ownerId: ctx.auth.userId });
+    await product.create({
+      name,
+      description,
+      price,
+      availableQuantity,
+      organizationId: ctx.params.orgId,
+    });
 
-  ctx.redirect(`/orgs/${id}/edit/index`);
-});
+    ctx.redirect('.');
+  })
 
-router.get('/:id/edit/index', loggedIn, async ctx => {
-  await ctx.render('orgs/edit', await organization.get(ctx.params.id));
-});
-router.post('/:id/edit/index', loggedIn, async ctx => {
-  // todo
-  ctx.redirect('/orgs/edit');
-});
+  .get('/:productId/', async ctx => {
+    await ctx.render('orgs/edit/products/edit', await product.get(ctx.params.productId));
+  })
+  .post('/:productId/', async ctx => {
+    const { name, description, price, availableQuantity } = ctx.request.body;
 
-router.get('/:id/edit/products', loggedIn, async ctx => {
-  await ctx.render('orgs/edit/products/index', { products: await product.getAllOrg(ctx.params.id) });
-});
+    await product.update({
+      name,
+      description,
+      price,
+      availableQuantity,
+      id: ctx.params.productId,
+    });
 
-router.get('/:id/edit/products/create', loggedIn, async ctx => {
-  await ctx.render('orgs/edit/products/create', { products: await product.getAllOrg(ctx.params.id) });
-});
+    ctx.redirect('..');
+  })
 
-router.post('/:id/edit/products/create', loggedIn, async ctx => {
-  const { name, description, price, availableQuantity } = ctx.request.body;
-
-  await product.create({
-    name,
-    description,
-    price,
-    availableQuantity,
-    organizationId: ctx.params.id,
+  .post('/:productId/delete', async ctx => {
+    await product.delete(ctx.params.productId);
+    ctx.redirect('..');
   });
 
-  ctx.redirect('.');
-});
+const subscriptionsRouter = new Router()
 
-router.get('/:orgId/edit/products/:productId/', loggedIn, async ctx => {
-  await ctx.render('orgs/edit/products/edit', await product.get(ctx.params.productId));
-});
+  .get('/', async ctx => {
+    await ctx.render('orgs/edit/subscriptions/index', { subscriptions: await subscription.getAllOrg(ctx.params.orgId) });
+  })
 
-router.post('/:orgId/edit/products/:productId/', loggedIn, async ctx => {
-  const { name, description, price, availableQuantity } = ctx.request.body;
+  .get('/create', async ctx => {
+    await ctx.render('orgs/edit/subscriptions/create', { subscriptions: await subscription.getAllOrg(ctx.params.orgId) });
+  })
+  .post('/create', async ctx => {
+    const { name, description, price, period } = ctx.request.body;
 
-  await product.update({
-    name,
-    description,
-    price,
-    availableQuantity,
-    id: ctx.params.productId,
+    await subscription.create({
+      name,
+      description,
+      price,
+      period,
+      organizationId: ctx.params.orgId,
+    });
+
+    ctx.redirect('.');
+  })
+
+  .get('/:subscriptionId', async ctx => {
+    const subscr = await subscription.get(ctx.params.subscriptionId);
+
+    subscr.period = Object.entries(subscr.period).map(([duration, number]) => `${number} ${duration}`).join(' ');
+
+    await ctx.render('orgs/edit/subscriptions/edit', subscr);
+  })
+  .post('/:subscriptionId', async ctx => {
+    const { name, description, price, period } = ctx.request.body;
+
+    await subscription.update({
+      name,
+      description,
+      price,
+      period,
+      id: ctx.params.subscriptionId,
+    });
+
+    ctx.redirect('..');
+  })
+
+  .post('/:subscriptionId/delete', async ctx => {
+    await subscription.delete(ctx.params.subscriptionId);
+    ctx.redirect('..');
   });
 
-  ctx.redirect('..');
-});
+const shopsRouter = new Router()
 
-router.post('/:orgId/edit/products/:productId/delete', loggedIn, async ctx => {
-  await product.delete(ctx.params.productId);
-  ctx.redirect('..');
-});
+  .get('/', async ctx => {
+    await ctx.render('orgs/edit/shops/index', { shops: await shop.getAllOrg(ctx.params.orgId) });
+  })
 
-router.get('/:id/edit/subscriptions', loggedIn, async ctx => {
-  await ctx.render('orgs/edit/subscriptions/index', { subscriptions: await subscription.getAllOrg(ctx.params.id) });
-});
+  .get('/create', async ctx => {
+    await ctx.render('orgs/edit/shops/create', { shops: await shop.getAllOrg(ctx.params.orgId) });
+  })
+  .post('/create', async ctx => {
+    const { lat, lng } = ctx.request.body;
 
-router.get('/:id/edit/subscriptions/create', loggedIn, async ctx => {
-  await ctx.render('orgs/edit/subscriptions/create', { subscriptions: await subscription.getAllOrg(ctx.params.id) });
-});
+    await shop.create({
+      lat,
+      lng,
+      organizationId: ctx.params.orgId,
+    });
 
-router.post('/:id/edit/subscriptions/create', loggedIn, async ctx => {
-  const { name, description, price, period } = ctx.request.body;
+    ctx.redirect('.');
+  })
 
-  await subscription.create({
-    name,
-    description,
-    price,
-    period,
-    organizationId: ctx.params.id,
+  .get('/:shopId/', async ctx => {
+    await ctx.render('orgs/edit/shops/edit', await shop.get(ctx.params.shopId));
+  })
+  .post('/:shopId/', async ctx => {
+    const { lat, lng } = ctx.request.body;
+
+    await shop.update({
+      lat,
+      lng,
+      id: ctx.params.shopId,
+    });
+
+    ctx.redirect('..');
+  })
+
+  .post('/:shopId/delete', async ctx => {
+    await shop.delete(ctx.params.shopId);
+    ctx.redirect('..');
   });
 
-  ctx.redirect('.');
-});
+const orgsRouter = new Router({ prefix: '/orgs' })
 
-router.get('/:orgId/edit/subscriptions/:subscriptionId', loggedIn, async ctx => {
-  const subscr = await subscription.get(ctx.params.subscriptionId);
+  .use(loggedIn)
 
-  subscr.period = Object.entries(subscr.period).map(([duration, number]) => `${number} ${duration}`).join(' ');
+  .get('/', async ctx =>
+    ctx.render('orgs/index', {
+      orgs: await organization.getAllOfUser(ctx.auth.userId),
+    })
+  )
 
-  await ctx.render('orgs/edit/subscriptions/edit', subscr);
-});
+  .get('/create', ctx => ctx.render('orgs/create'))
+  .post('/create', async ctx => {
+    const { name } = ctx.request.body;
 
-router.post('/:orgId/edit/subscriptions/:subscriptionId', loggedIn, async ctx => {
-  const { name, description, price, period } = ctx.request.body;
+    const id = await organization.create({ name, ownerId: ctx.auth.userId });
 
-  await subscription.update({
-    name,
-    description,
-    price,
-    period,
-    id: ctx.params.subscriptionId,
-  });
+    ctx.redirect(`/orgs/${id}/edit/index`);
+  })
 
-  ctx.redirect('..');
-});
+  .get('/:orgId/edit/index', authOrg, async ctx => {
+    await ctx.render('orgs/edit', await organization.get(ctx.params.orgId));
+  })
+  .post('/:orgId/edit/index', authOrg, async ctx => {
+    const { name } = ctx.request.body;
 
-router.post('/:orgId/edit/subscriptions/:subscriptionId/delete', loggedIn, async ctx => {
-  await subscription.delete(ctx.params.subscriptionId);
-  ctx.redirect('..');
-});
+    await organization.update({ id: ctx.params.orgId, name });
 
-router.get('/:id/edit/shops', loggedIn, async ctx => {
-  await ctx.render('orgs/edit/shops/index', { shops: await shop.getAllOrg(ctx.params.id) });
-});
+    ctx.redirect('/orgs');
+  })
 
-router.get('/:id/edit/shops/create', loggedIn, async ctx => {
-  await ctx.render('orgs/edit/shops/create', { shops: await shop.getAllOrg(ctx.params.id) });
-});
+  .use('/:orgId/edit/products', authOrg, productsRouter.routes(), productsRouter.allowedMethods())
+  .use('/:orgId/edit/subscriptions', authOrg, subscriptionsRouter.routes(), subscriptionsRouter.allowedMethods())
+  .use('/:orgId/edit/shops', authOrg, shopsRouter.routes(), shopsRouter.allowedMethods());
 
-router.post('/:id/edit/shops/create', loggedIn, async ctx => {
-  const { lat, lng } = ctx.request.body;
+async function authOrg (ctx, next) {
+  const org = await organization.get(ctx.params.orgId);
+  const userId = ctx.auth.userId;
 
-  await shop.create({
-    lat,
-    lng,
-    organizationId: ctx.params.id,
-  });
+  assert.user(org.owner_id === userId, 'User unauthorized to this org');
+  await next();
+}
 
-  ctx.redirect('.');
-});
-
-router.get('/:orgId/edit/shops/:shopId/', loggedIn, async ctx => {
-  await ctx.render('orgs/edit/shops/edit', await shop.get(ctx.params.shopId));
-});
-
-router.post('/:orgId/edit/shops/:shopId/', loggedIn, async ctx => {
-  const { lat, lng } = ctx.request.body;
-
-  await shop.update({
-    lat,
-    lng,
-    id: ctx.params.shopId,
-  });
-
-  ctx.redirect('..');
-});
-
-router.post('/:orgId/edit/shops/:shopId/delete', loggedIn, async ctx => {
-  await shop.delete(ctx.params.shopId);
-  ctx.redirect('..');
-});
-
-module.exports = router;
+module.exports = orgsRouter;

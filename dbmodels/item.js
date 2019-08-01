@@ -2,8 +2,8 @@ const assert = require('../util/assert.js');
 const db = require('../db.js');
 
 function validate ({ price, name }) {
-  assert(BigInt(price) > 0, 'price must be greater than 0');
-  assert(name, 'name must be present');
+  assert.user(BigInt(price) > 0, 'price must be greater than 0');
+  assert.user(name, 'name must be present');
 }
 
 module.exports = {

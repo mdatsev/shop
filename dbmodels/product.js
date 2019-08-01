@@ -13,7 +13,7 @@ const EXPOSED_FIELDS = `
 `;
 
 function validate ({ availableQuantity }) {
-  assert(BigInt(availableQuantity) > 0, 'available quantity must be greater than 0');
+  assert.user(BigInt(availableQuantity) > 0, 'available quantity must be greater than 0');
 }
 
 module.exports = {

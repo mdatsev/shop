@@ -2,7 +2,7 @@ const assert = require('../util/assert.js');
 const db = require('../db.js');
 
 function validate ({ name }) {
-  assert(name, 'name must be present');
+  assert.user(name, 'name must be present');
 }
 
 module.exports = {
@@ -21,13 +21,24 @@ module.exports = {
 
   async get (id) {
     const result = await db.query(`
-      SELECT name
+      SELECT name, owner_id
       FROM organization
       WHERE id = $id`, {
       id,
     });
 
     return result.rows[0];
+  },
+
+  async update ({ id, name }) {
+    await db.query(`
+      UPDATE organization
+      SET
+        name = $name
+      WHERE id = $id`, {
+      id,
+      name,
+    });
   },
 
   async getSecret (id) {
