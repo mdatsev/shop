@@ -1,4 +1,4 @@
-const assert = require('../util/assert.js');
+const assert = require('../utils/assert.js');
 const db = require('../db.js');
 
 function validate ({ price, name }) {
@@ -55,6 +55,7 @@ module.exports = {
         i.description as description,
         i.type as type,
         i.price as price,
+        i.image as image,
         p.available_quantity as "availableQuantity",
         s.period as period
       FROM item i

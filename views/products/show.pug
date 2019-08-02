@@ -7,8 +7,15 @@ block content
     p
       | by 
       a(href='#') Not Implemented
-    img.img-fluid.rounded(src='http://placehold.it/700x400')
+    img.img-fluid.rounded(src=image)
     p #{description}
+    h3 Specs:
+    table.table
+      tbody
+        each spec in specs
+          tr
+            td #{spec.name}
+            td #{spec.value}
     button.btn.bg-info#display-route Show me how to go to shop
     button.mx-2.btn.btn-success(onclick=`addToBasket("product", ${id})`) + Add to basket
     #map.d-none

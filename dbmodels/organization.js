@@ -1,4 +1,4 @@
-const assert = require('../util/assert.js');
+const assert = require('../utils/assert.js');
 const db = require('../db.js');
 
 function validate ({ name }) {

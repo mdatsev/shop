@@ -10,7 +10,7 @@ block main-content
         .col-lg-4.col-md-6.mb-4
             .card.h-100
               a(href=`${product.id}/`)
-                img.card-img-top(src='http://placehold.it/700x400')
+                img.card-img-top(src=product.image)
               .card-body
                 h4.card-title
                   a(href=`${product.id}/`) #{product.name}

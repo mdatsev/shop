@@ -1,5 +1,5 @@
 const db = require('../db.js');
-const secrets = require('../util/secrets.js');
+const secrets = require('../utils/secrets.js');
 
 module.exports = {
   async create ({ userId, expirationDate }) {

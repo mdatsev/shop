@@ -4,10 +4,12 @@ const item = require('./item.js');
 const EXPOSED_FIELDS = `
   subscription.id as id,
   subscription.period as period,
+  item.id as "itemId",
   item.name as name,
   item.type as type,
   item.price as price,
-  item.organization_id as "organizationId"
+  item.organization_id as "organizationId",
+  item.image as image
 `;
 
 // function validate ({ period }) {

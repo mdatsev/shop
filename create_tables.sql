@@ -29,6 +29,7 @@ CREATE TABLE item (
     organization_id bigint NOT NULL REFERENCES organization ON DELETE CASCADE,
     type item_type NOT NULL,
     price bigint NOT NULL CHECK (price > 0),
+    image varchar,
     created_at timestamp DEFAULT NOW()
 );
 

@@ -1,15 +1,17 @@
-const assert = require('../util/assert.js');
+const assert = require('../utils/assert.js');
 const db = require('../db.js');
 const item = require('./item.js');
 
 const EXPOSED_FIELDS = `
   product.id as id,
   product.available_quantity as "availableQuantity",
+  item.id as "itemId",
   item.name as name,
   item.type as type,
   item.price as price,
   item.description as description,
-  item.organization_id as "organizationId"
+  item.organization_id as "organizationId",
+  item.image as image
 `;
 
 function validate ({ availableQuantity }) {

@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 
-const assert = require('../util/assert');
+const assert = require('../utils/assert');
 
 const { loggedIn } = require('../middleware/user_auth.js');
 

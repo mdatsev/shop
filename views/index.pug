@@ -29,7 +29,7 @@ block content
             .col-lg-4.col-md-6.mb-4
                 .card.h-100
                   a(href=`/${item.type}s/${item.id}/show`)
-                    img.card-img-top(src='http://placehold.it/700x400', alt='')
+                    img.card-img-top(src=item.image, alt='')
                   .card-body
                     h4.card-title
                       a(href=`/${item.type}s/${item.id}/show`) #{item.name}

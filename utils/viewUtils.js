@@ -16,8 +16,13 @@ function formatPrice (price, period) {
     : formatCurrency(price);
 }
 
+function pictureUrl (picture) {
+  return picture;
+}
+
 module.exports = {
   formatCurrency,
   formatPeriod,
   formatPrice,
+  pictureUrl,
 };
