@@ -56,7 +56,7 @@ module.exports = {
     }, client);
   },
 
-  async getAll ({ limit, offset, order, ascending }) {
+  async getAll ({ limit, offset, order, ascending, filter: { specName, specValue } }) {
     const result = await db.query(`
       SELECT
         COALESCE(p.id, s.id) as id,
@@ -68,13 +68,26 @@ module.exports = {
         p.available_quantity as "availableQuantity",
         s.period as period
       FROM item i
-      LEFT JOIN product p ON p.item_id = i.id
-      LEFT JOIN subscription s ON s.item_id = i.id
+      LEFT JOIN item_spec
+        ON i.id = item_spec.item_id
+      LEFT JOIN spec
+        ON spec.id = item_spec.spec_id
+      LEFT JOIN product p
+        ON p.item_id = i.id
+      LEFT JOIN subscription s
+        ON s.item_id = i.id
+      WHERE (spec.name = $specName OR $allSpecNames)
+        AND (item_spec.value = $specValue OR $allSpecValues)
+      GROUP BY i.id, p.id, s.id
       ORDER BY ${db.escapeIdentifier(order)} ${ascending ? 'ASC' : 'DESC'}, i.id
       LIMIT $limit
       OFFSET $offset`, {
       limit,
       offset,
+      specName,
+      allSpecNames: !specName,
+      specValue,
+      allSpecValues: !specValue,
     });
 
     return result.rows;

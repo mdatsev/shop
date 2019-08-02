@@ -17,6 +17,8 @@ block content
           label
             input(type='radio', name='ascOrDesc', value='desc', checked=(ascOrDesc=='desc'))
             | Descending
+          input(type='text', name='specName', placeholder='Spec name', value=specName)
+          input(type='text', name='specValue', placeholder='Value (default all)', value=specValue)
           //- label Placeholder
           //-   input(name='name', type='text', placeholder='Placeholder')
           //- label
@@ -39,5 +41,5 @@ block content
         nav
           ul.pagination
             for i in pages
-              li.page-item(class=(pageNum === i ? 'active' : ''))
-                a.page-link(href='?pageNum=' + i) #{i}
+              li.page-item(class=(pageNum == i ? 'active' : ''))
+                a.page-link(href='#', onclick=`goToPage(${i})`) #{i}

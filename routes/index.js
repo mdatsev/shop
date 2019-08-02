@@ -41,6 +41,8 @@ router.get('/basket', async ctx => {
     if (type === 'product') {
       const prod = await product.get(id);
 
+      if (!prod) continue;
+
       prod.basketId = basketId;
       total.price += +prod.price;
       products.push(prod);
@@ -50,7 +52,7 @@ router.get('/basket', async ctx => {
 });
 
 router.get('/', async ctx => {
-  const { pageNum = 1, perPage = 15, sort = 'created_at', ascOrDesc = 'desc' } = ctx.query;
+  const { pageNum = 1, perPage = 15, sort = 'created_at', ascOrDesc = 'desc', specName, specValue } = ctx.query;
 
   const pageIndex = pageNum - 1; // 0 indexed
   const limit = +perPage;
@@ -58,17 +60,22 @@ router.get('/', async ctx => {
   const order = sort; // todo assert ['created_at', 'price', 'name'].includes(sort)
   const ascending = ascOrDesc === 'asc';
 
+  if (specName) {
+
+  }
+
   const items = await item.getAll({
     limit,
     offset,
     order,
     ascending,
+    filter: { specName, specValue },
   });
 
   const pages = [...Array(11).keys()] // number of displayed page buttons
-    .map(i => pageIndex + i - Math.min(6, pageIndex)); // center on current but no negative
+    .map(i => pageIndex + i - Math.min(5, pageIndex) + 1); // center on current but no negative
 
-  await ctx.render('index', { items, pageNum, pages, perPage, sort, ascOrDesc });
+  await ctx.render('index', { items, pages, pageNum, perPage, sort, ascOrDesc, specName, specValue });
 });
 
 module.exports = router;

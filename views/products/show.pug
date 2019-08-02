@@ -3,21 +3,21 @@ extends ../layout
 block content
   .center.col-lg-9
     h1.mt-4 #{name}
+    button.mx-2.btn.btn-success.float-right(onclick=`addToBasket("product", ${id})`) + Add to basket
     p.lead #{formatPrice(price)}
     p
       | by 
       a(href='#') Not Implemented
     img.img-fluid.rounded(src=image)
-    p #{description}
+    .pre #{description}
     h3 Specs:
     table.table
       tbody
         each spec in specs
           tr
-            td #{spec.name}
-            td #{spec.value}
+            td.pre #{spec.name}
+            td.pre #{spec.value}
     button.btn.bg-info#display-route Show me how to go to shop
-    button.mx-2.btn.btn-success(onclick=`addToBasket("product", ${id})`) + Add to basket
     #map.d-none
     table.table.bg-info.d-none#route
       thead

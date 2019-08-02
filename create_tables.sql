@@ -47,8 +47,8 @@ CREATE TABLE product (
 
 CREATE TABLE item_spec (
     id bigserial PRIMARY KEY,
-    item_id bigint NOT NULL REFERENCES item,
-    spec_id bigint NOT NULL REFERENCES spec,
+    item_id bigint NOT NULL REFERENCES item ON DELETE CASCADE,
+    spec_id bigint NOT NULL REFERENCES spec ON DELETE CASCADE,
     value varchar NOT NULL,
     UNIQUE (item_id, spec_id)
 );
