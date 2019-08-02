@@ -15,6 +15,8 @@ const productsRoutes = require('./routes/products.js');
 const subscriptionsRoutes = require('./routes/subscriptions.js');
 const ajaxRoutes = require('./routes/ajax.js');
 
+const { formatCurrency } = require('./util/formatting.js');
+
 const app = new Koa();
 
 app.use(logger());
@@ -24,7 +26,12 @@ app.use(bodyparser({ enableTypes: ['json', 'form'] }));
 app.use(apiRoutes.routes(), apiRoutes.allowedMethods());
 
 app.use(koastatic(path.join(__dirname, 'public')));
-app.use(views(path.join(__dirname, 'views')));
+app.use(views(path.join(__dirname, 'views'), {
+  extension: 'pug',
+  globals: {
+    formatCurrency,
+  },
+}));
 app.use(authenticateUser());
 app.use(async (ctx, next) => {
   ctx.viewGlobals.loggedIn = ctx.auth.loggedIn;

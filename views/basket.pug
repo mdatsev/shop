@@ -18,7 +18,7 @@ block body
         tr
           td 
             a(href=`/${product.type}s/${product.id}/show`, target='_parent') #{product.name}
-          td #{product.price}c
+          td #{formatCurrency(product.price)}
           td
             button.mx-2.btn.btn-danger(onclick=`parent.removeFromBasket(${product.basketId})`) Remove
       tr
