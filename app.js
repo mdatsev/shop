@@ -15,7 +15,7 @@ const productsRoutes = require('./routes/products.js');
 const subscriptionsRoutes = require('./routes/subscriptions.js');
 const ajaxRoutes = require('./routes/ajax.js');
 
-const { formatCurrency } = require('./util/formatting.js');
+const formatting = require('./util/formatting.js');
 
 const app = new Koa();
 
@@ -29,7 +29,7 @@ app.use(koastatic(path.join(__dirname, 'public')));
 app.use(views(path.join(__dirname, 'views'), {
   extension: 'pug',
   globals: {
-    formatCurrency,
+    ...formatting,
   },
 }));
 app.use(authenticateUser());

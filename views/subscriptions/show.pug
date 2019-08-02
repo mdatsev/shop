@@ -3,7 +3,7 @@ extends ../layout
 block content
   .center.col-lg-9
     h1.mt-4 #{name}
-    p.lead #{formatCurrency(price)} per #{period}
+    p.lead #{formatPrice(price, period)}
     p
       | by 
       a(href='#') Not Implemented

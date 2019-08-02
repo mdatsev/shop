@@ -18,12 +18,12 @@ block body
         tr
           td 
             a(href=`/${product.type}s/${product.id}/show`, target='_parent') #{product.name}
-          td #{formatCurrency(product.price)}
+          td #{formatPrice(product.price)}
           td
             button.mx-2.btn.btn-danger(onclick=`parent.removeFromBasket(${product.basketId})`) Remove
       tr
         th Total:
-        th #{formatCurrency(total.price)}
+        th #{formatPrice(total.price)}
         th
   h2 Checkout now
   .example.example3

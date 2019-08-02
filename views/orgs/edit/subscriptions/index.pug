@@ -14,6 +14,6 @@ block main-content
               .card-body
                 h4.card-title
                   a(href=`${subscription.id}/`) #{subscription.name}
-                h5 #{formatCurrency(subscription.price)}
+                h5 #{formatPrice(subscription.price)}
                 p.card-text
                   | #{subscription.description}
