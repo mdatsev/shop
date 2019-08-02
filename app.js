@@ -35,6 +35,7 @@ app.use(views(path.join(__dirname, 'views'), {
 app.use(authenticateUser());
 app.use(async (ctx, next) => {
   ctx.viewGlobals.loggedIn = ctx.auth.loggedIn;
+  ctx.viewGlobals.userName = ctx.auth.userName;
   await next();
 });
 

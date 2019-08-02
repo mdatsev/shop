@@ -33,7 +33,7 @@ block content
                   .card-body
                     h4.card-title
                       a(href=`/${item.type}s/${item.id}/show`) #{item.name}
-                    h5 #{item.price}c
+                    h5 #{formatCurrency(item.price)}
                     p.card-text
                       | #{item.description}
         nav

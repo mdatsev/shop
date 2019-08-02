@@ -23,11 +23,11 @@ block body
             button.mx-2.btn.btn-danger(onclick=`parent.removeFromBasket(${product.basketId})`) Remove
       tr
         th Total:
-        th #{total.price}
+        th #{formatCurrency(total.price)}
         th
   h2 Checkout now
   .example.example3
-    input.form-control#cardholder-name(type='text', placeholder='Full name')
+    input.form-control#cardholder-name(type='text', placeholder='Full name', value=userName)
     #card-element
     button#card-button Submit Payment
   script(src='/javascripts/checkout.js')

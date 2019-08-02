@@ -11,7 +11,7 @@ function initBasketButton () {
     placement: 'bottom',
     trigger: 'manual',
     animation: false,
-    template: `<div class="popover" role="tooltip">
+    template: `<div class="popover basket" role="tooltip">
                 <div class="arrow">
                 </div>
                 <div class="popover-body" id="basket">
@@ -29,10 +29,9 @@ function initBasketButton () {
     }
   });
 
-  updateBasketPreview();
   basketButton.on('inserted.bs.popover', () => {
     $('#basket').html(iframe);
-    // updateBasketPreview();
+    updateBasketPreview();
   });
 }
 

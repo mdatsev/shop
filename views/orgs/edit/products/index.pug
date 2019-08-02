@@ -14,6 +14,6 @@ block main-content
               .card-body
                 h4.card-title
                   a(href=`${product.id}/`) #{product.name}
-                h5 #{product.price}c
+                h5 #{formatCurrency(product.price)}
                 p.card-text
                   | #{product.description}
