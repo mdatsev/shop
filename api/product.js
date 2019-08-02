@@ -1,12 +1,13 @@
 const product = require('../dbmodels/product.js');
 
 module.exports = {
-  async create ({ name, price, description, specs, availableQuantity }, apiCtx) {
+  async create ({ name, price, description, specs, availableQuantity, image }, apiCtx) {
     return product.create({
       name,
       description,
       price,
       specs,
+      image,
       availableQuantity,
       organizationId: apiCtx.organizationId,
     });

@@ -1,5 +1,6 @@
 const assert = require('../utils/assert.js');
 const db = require('../db.js');
+const spec = require('./spec.js')
 
 function validate ({ price, name }) {
   assert.user(BigInt(price) > 0, 'price must be greater than 0');
@@ -7,20 +8,28 @@ function validate ({ price, name }) {
 }
 
 module.exports = {
-  async create ({ name, description, organizationId, type, specs, price }, client) {
+  async create ({ name, description, organizationId, type, specs = [], price, image }, client) {
     validate({ price, name });
-    const result = await db.query(`
-      INSERT INTO item (name, organization_id, type, price, description)
-      VALUES ($name, $organizationId, $type, $price, $description)
-      RETURNING id`, {
-      name,
-      price,
-      type,
-      organizationId,
-      description,
-    }, client);
+    return db.doTransaction(async client => {
+      const result = await client.query(`
+        INSERT INTO item (name, organization_id, type, price, description, image)
+        VALUES ($name, $organizationId, $type, $price, $description, $image)
+        RETURNING id`, {
+        name,
+        price,
+        type,
+        organizationId,
+        description,
+        image,
+      });
+      const itemId = result.rows[0].id;
 
-    return result.rows[0].id;
+      for (const { name, value } of specs) {
+        spec.create({ name, value, itemId }, client);
+      }
+
+      return itemId;
+    }, client);
   },
 
   async update ({ id, name, description, specs, price }, client) {

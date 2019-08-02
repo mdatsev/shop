@@ -1,13 +1,14 @@
 const subscription = require('../dbmodels/subscription.js');
 
 module.exports = {
-  async create ({ name, description, price, specs, period }, apiCtx) {
+  async create ({ name, description, price, specs, period, image }, apiCtx) {
     return subscription.create({
       name,
       description,
       price,
       specs,
       period,
+      image,
       organizationId: apiCtx.organizationId,
     });
   },

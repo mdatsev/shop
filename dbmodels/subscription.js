@@ -17,7 +17,7 @@ const EXPOSED_FIELDS = `
 // }
 
 module.exports = {
-  async create ({ name, price, description, specs, period, organizationId }) {
+  async create ({ name, price, description, specs, period, organizationId, image }) {
     return db.doTransaction(async client => {
       const itemId = await item.create({
         name,
@@ -26,6 +26,7 @@ module.exports = {
         specs,
         organizationId,
         description,
+        image,
       }, client);
 
       const result = await client.query(`
