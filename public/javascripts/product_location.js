@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
 
 function getShops () {
   return fetch('/ajax/shopLocations', {
@@ -116,6 +115,6 @@ buttonElement.addEventListener('click', () => {
 
 ticketsToBasketButton.addEventListener('click', () => {
   for (const ticket of tickets) {
-    addToBasket('product', ticket);
+    window.addToBasket('product', ticket);
   }
 });

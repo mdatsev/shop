@@ -37,7 +37,7 @@ module.exports = {
         period,
       });
 
-      return result.rows[0].id;
+      return result.rows[0];
     });
   },
 

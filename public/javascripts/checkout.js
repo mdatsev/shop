@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 const stripe = Stripe('pk_test_Lgp6NNZjmFW3OiuAT7ONHaas00Ftld48D9');
 
 const elements = stripe.elements({

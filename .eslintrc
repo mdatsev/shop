@@ -2,9 +2,17 @@
   "extends": "semistandard",
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
-    "newline-after-var": ["error", "always"]
+    "newline-after-var": ["error", "always"],
+    "curly": "off"
+  },
+  "env": {
+    "browser": true,
+    "node": true
   },
   "globals": {
-    "BigInt": "readonly"
+    "PAGE_GLOBALS": "readonly",
+    "Stripe": "readonly",
+    "$": "readonly",
+    "google": "readonly"
   }
 }

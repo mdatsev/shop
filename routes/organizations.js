@@ -158,7 +158,7 @@ const orgsRouter = new Router({ prefix: '/orgs' })
   .post('/create', async ctx => {
     const { name } = ctx.request.body;
 
-    const id = await organization.create({ name, ownerId: ctx.auth.userId });
+    const { id } = await organization.create({ name, ownerId: ctx.auth.userId });
 
     ctx.redirect(`/orgs/${id}/edit/index`);
   })

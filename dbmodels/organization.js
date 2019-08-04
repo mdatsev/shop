@@ -16,7 +16,7 @@ module.exports = {
       ownerId,
     });
 
-    return result.rows[0].id;
+    return result.rows[0];
   },
 
   async get (id) {

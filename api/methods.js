@@ -1,18 +1,78 @@
-const product = require('./product.js');
-const subscription = require('./subscription.js');
+const product = require('../dbmodels/product.js');
+const subscription = require('../dbmodels/subscription.js');
 
 const api = {
-  createProduct: product.create,
-  getProduct: product.get,
-  updateProduct: product.update,
-  deleteProduct: product.delete,
-  getAllOrgProducts: product.getAllOrg,
+  async createProduct ({ name, price, description, specs, availableQuantity }, apiCtx) {
+    return product.create({
+      name,
+      description,
+      price,
+      specs,
+      availableQuantity,
+      organizationId: apiCtx.organizationId,
+    });
+  },
 
-  createSubscription: subscription.create,
-  getSubscription: subscription.get,
-  updateSubscription: subscription.update,
-  deleteSubscription: subscription.delete,
-  getAllOrgSubscriptions: subscription.getAllOrg,
+  async updateProduct ({ id, name, price, description, specs, availableQuantity }, apiCtx) {
+    await product.update({
+      id,
+      name,
+      description,
+      price,
+      specs,
+      availableQuantity,
+    });
+    return {};
+  },
+
+  async getProduct ({ id }, apiCtx) {
+    return product.get(id);
+  },
+
+  async deleteProduct ({ id }, apiCtx) {
+    await product.delete(id);
+    return {};
+  },
+
+  async getAllOrgProducts (_params, apiCtx) {
+    return product.getAllOrg(apiCtx.organizationId);
+  },
+
+  async createSubscription ({ name, description, price, specs, period }, apiCtx) {
+    return subscription.create({
+      name,
+      description,
+      price,
+      specs,
+      period,
+      organizationId: apiCtx.organizationId,
+    });
+  },
+
+  async updateSubscription ({ id, name, price, description, specs, period }, apiCtx) {
+    await subscription.update({
+      id,
+      name,
+      description,
+      price,
+      specs,
+      period,
+    });
+    return {};
+  },
+
+  async getSubscription ({ id }, apiCtx) {
+    return subscription.get(id);
+  },
+
+  async deleteSubscription ({ id }, apiCtx) {
+    await subscription.delete(id);
+    return {};
+  },
+
+  async getAllOrgSubscriptions (_params, apiCtx) {
+    return subscription.getAllOrg(apiCtx.organizationId);
+  },
 };
 
 module.exports = api;

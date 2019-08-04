@@ -42,7 +42,7 @@ CREATE TABLE subscription (
 CREATE TABLE product (
     id bigserial PRIMARY KEY,
     item_id bigint UNIQUE NOT NULL REFERENCES item ON DELETE CASCADE,
-    available_quantity bigint NOT NULL CHECK (available_quantity > 0)
+    available_quantity bigint CHECK (available_quantity > 0)
 );
 
 CREATE TABLE item_spec (

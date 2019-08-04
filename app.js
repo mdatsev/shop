@@ -17,36 +17,31 @@ const ajaxRoutes = require('./routes/ajax.js');
 
 const viewUtils = require('./utils/viewUtils.js');
 
-const app = new Koa();
-
-app.use(logger());
-app.use(errorHandler());
-app.use(bodyparser({ enableTypes: ['json', 'form'] }));
-
-app.use(apiRoutes.routes(), apiRoutes.allowedMethods());
-
-app.use(koastatic(path.join(__dirname, 'public')));
-app.use(views(path.join(__dirname, 'views'), {
-  extension: 'pug',
-  globals: {
-    ...viewUtils,
-  },
-}));
-app.use(authenticateUser());
-app.use(async (ctx, next) => {
-  ctx.viewGlobals.loggedIn = ctx.auth.loggedIn;
-  ctx.viewGlobals.userName = ctx.auth.userName;
-  await next();
-});
-
-app.use(indexRoutes.routes(), indexRoutes.allowedMethods());
-app.use(organizationsRoutes.routes(), organizationsRoutes.allowedMethods());
-app.use(productsRoutes.routes(), productsRoutes.allowedMethods());
-app.use(subscriptionsRoutes.routes(), subscriptionsRoutes.allowedMethods());
-app.use(ajaxRoutes.routes(), ajaxRoutes.allowedMethods());
-
-app.on('error', (err, ctx) => {
-  console.error(err);
-});
+const app = new Koa()
+  .use(logger())
+  .use(errorHandler())
+  .use(apiRoutes.routes(), apiRoutes.allowedMethods())
+  .use(koastatic(path.join(__dirname, 'public')))
+  .use(views(path.join(__dirname, 'views'), {
+    extension: 'pug',
+    globals: {
+      ...viewUtils,
+    },
+  }))
+  .use(authenticateUser())
+  .use(async (ctx, next) => {
+    ctx.viewGlobals.loggedIn = ctx.auth.loggedIn;
+    ctx.viewGlobals.userName = ctx.auth.userName;
+    await next();
+  })
+  .use(bodyparser({ enableTypes: ['json', 'form'] }))
+  .use(indexRoutes.routes(), indexRoutes.allowedMethods())
+  .use(organizationsRoutes.routes(), organizationsRoutes.allowedMethods())
+  .use(productsRoutes.routes(), productsRoutes.allowedMethods())
+  .use(subscriptionsRoutes.routes(), subscriptionsRoutes.allowedMethods())
+  .use(ajaxRoutes.routes(), ajaxRoutes.allowedMethods())
+  .on('error', (err, ctx) => {
+    console.error(err);
+  });
 
 module.exports = app;

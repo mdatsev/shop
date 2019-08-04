@@ -1,9 +1,9 @@
 const assert = require('../utils/assert.js');
 const db = require('../db.js');
-const spec = require('./spec.js')
+const spec = require('./spec.js');
 
 function validate ({ price, name }) {
-  assert.user(BigInt(price) > 0, 'price must be greater than 0');
+  assert.user(price > 0, 'price must be greater than 0');
   assert.user(name, 'name must be present');
 }
 

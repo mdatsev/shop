@@ -20,7 +20,7 @@ module.exports = {
       organizationId,
     });
 
-    return result.rows[0].id;
+    return result.rows[0];
   },
 
   async update ({ id, lat, lng }) {

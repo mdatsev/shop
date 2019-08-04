@@ -1,7 +1,7 @@
 const router = new (require('koa-router'))({ prefix: '/products' });
 
 const product = require('../dbmodels/product.js');
-const spec = require('../dbmodels/spec.js')
+const spec = require('../dbmodels/spec.js');
 
 router.get('/:id/show', async ctx => {
   const prod = await product.get(ctx.params.id);
