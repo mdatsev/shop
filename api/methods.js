@@ -13,17 +13,17 @@ const api = {
     });
   },
 
-  // async updateProduct ({ id, name, price, description, specs, availableQuantity }, apiCtx) {
-  //   await product.update({
-  //     id,
-  //     name,
-  //     description,
-  //     price,
-  //     specs,
-  //     availableQuantity,
-  //   });
-  //   return {};
-  // },
+  async updateProduct ({ id, name, price, description, specs, availableQuantity }, apiCtx) {
+    await product.update({
+      id,
+      name,
+      description,
+      price,
+      specs,
+      availableQuantity,
+    });
+    return {};
+  },
 
   // async getProduct ({ id }, apiCtx) {
   //   return product.get(id);

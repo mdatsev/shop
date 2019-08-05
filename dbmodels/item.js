@@ -24,7 +24,7 @@ module.exports = {
       });
       const itemId = result.rows[0].id;
 
-      for (const { name, value } of specs) {
+      for (const [name, value] of Object.entries(specs)) {
         spec.create({ name, value, itemId }, client);
       }
 

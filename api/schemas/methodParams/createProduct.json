@@ -12,6 +12,12 @@
     },
     "availableQuantity": {
       "type": "number"
+    },
+    "specs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "required": ["name", "price"],
