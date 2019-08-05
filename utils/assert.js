@@ -5,6 +5,9 @@ class UserError extends BaseAssertionError { }
 class PeerError extends BaseAssertionError { }
 
 module.exports = {
+  SystemError,
+  UserError,
+  PeerError,
   system: (condition, message) => {
     if (!condition) throw new SystemError(message);
   },

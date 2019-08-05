@@ -18,8 +18,8 @@ const ajaxRoutes = require('./routes/ajax.js');
 const viewUtils = require('./utils/viewUtils.js');
 
 const app = new Koa()
-  .use(logger())
   .use(errorHandler())
+  .use(logger())
   .use(apiRoutes.routes(), apiRoutes.allowedMethods())
   .use(koastatic(path.join(__dirname, 'public')))
   .use(views(path.join(__dirname, 'views'), {
@@ -39,9 +39,6 @@ const app = new Koa()
   .use(organizationsRoutes.routes(), organizationsRoutes.allowedMethods())
   .use(productsRoutes.routes(), productsRoutes.allowedMethods())
   .use(subscriptionsRoutes.routes(), subscriptionsRoutes.allowedMethods())
-  .use(ajaxRoutes.routes(), ajaxRoutes.allowedMethods())
-  .on('error', (err, ctx) => {
-    console.error(err);
-  });
+  .use(ajaxRoutes.routes(), ajaxRoutes.allowedMethods());
 
 module.exports = app;
