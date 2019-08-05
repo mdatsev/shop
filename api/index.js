@@ -53,7 +53,7 @@ module.exports = async ctx => {
     return (ctx.status = STATUS_UNSUPORTED_MEDIA_TYPE);
 
   if (ctx.length > MAX_CONTENT_LENGTH) {
-    return error(ERR_PAYLOAD_TOO_LARGE, 'Payload too large', {});
+    return error(ERR_PAYLOAD_TOO_LARGE, 'Payload too large');
   }
 
   let body;
@@ -61,7 +61,7 @@ module.exports = async ctx => {
   try {
     body = await parse.json(ctx, { strict: true });
   } catch (e) {
-    return error(ERR_PARSE_ERROR, 'Parse error', {});
+    return error(ERR_PARSE_ERROR, 'Parse error');
   }
 
   id = body.id;
@@ -84,8 +84,10 @@ module.exports = async ctx => {
   if (!RPC.exists(method))
     return error(ERR_METHOD_NOT_FOUND, 'Method not found', { method });
 
-  if (!RPC.paramsValid({ method, params }))
-    return error(ERR_INVALID_PARAMS, 'Invalid params');
+  const { valid: paramsValid, message } = RPC.validateParams({ method, params });
+
+  if (!paramsValid)
+    return error(ERR_INVALID_PARAMS, 'Invalid params', message);
 
   try {
     const result = await RPC.call({ method, params });

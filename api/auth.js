@@ -1,10 +1,10 @@
+const assert = require('../utils/assert.js');
+const _ = require('lodash');
 // const organization = require('../controllers/organization.js');
 
 module.exports = {
   async auth (authInfo) {
-    if (!authInfo) {
-      throw Error('No auth info provided');
-    }
+    assert.user(_.isObjectLike(authInfo), 'Invalid or missing authInfo');
     const { organizationId/*, organizationSecret */ } = authInfo;
 
     // const realSecret = organization.getSecret(organizationId);

@@ -9,6 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "ajv": "^6.10.2",
     "bcrypt": "^3.0.6",
     "co-body": "^6.0.0",
     "debug": "^4.1.1",

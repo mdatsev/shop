@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "description": {
+      "type": "string"
+    },
+    "availableQuantity": {
+      "type": "number"
+    }
+  },
+  "required": ["name", "price"],
+  "additionalProperties": false
+}
