@@ -1,6 +1,9 @@
 {
   "type": "object",
   "properties": {
+    "id": {
+      "type": "string"
+    },
     "name": {
       "type": "string"
     },
@@ -10,19 +13,10 @@
     "description": {
       "type": "string"
     },
-    "availableQuantity": {
-      "type": "number"
-    },
-    "image": {
+    "period": {
       "type": "string"
-    },
-    "specs": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
-      }
     }
   },
-  "required": ["name", "price"],
+  "required": ["id", "name", "price"],
   "additionalProperties": false
 }

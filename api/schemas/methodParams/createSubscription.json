@@ -10,8 +10,8 @@
     "description": {
       "type": "string"
     },
-    "availableQuantity": {
-      "type": "number"
+    "period": {
+      "type": "string"
     },
     "image": {
       "type": "string"
@@ -23,6 +23,6 @@
       }
     }
   },
-  "required": ["name", "price"],
+  "required": ["name", "price", "period"],
   "additionalProperties": false
 }
