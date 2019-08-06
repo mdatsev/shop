@@ -1,5 +1,29 @@
+const assert = require('../utils/assert.js');
+
 const product = require('../dbmodels/product.js');
 const subscription = require('../dbmodels/subscription.js');
+
+async function hasProductAccess (id, apiCtx) {
+  const { organizationId } = apiCtx;
+
+  const prod = await product.get(id);
+
+  if (!prod)
+    return false;
+
+  return prod.organizationId === organizationId;
+}
+
+async function hasSubscriptionAccess (id, apiCtx) {
+  const { organizationId } = apiCtx;
+
+  const subscr = await subscription.get(id);
+
+  if (!subscr)
+    return false;
+
+  return subscr.organizationId === organizationId;
+}
 
 const api = {
   async createProduct ({ name, price, description, specs, image, availableQuantity }, apiCtx) {
@@ -15,10 +39,12 @@ const api = {
   },
 
   async getProduct ({ id }, apiCtx) {
+    assert.user(await hasProductAccess(id, apiCtx), 'Unauthorized for this product');
     return product.get(id);
   },
 
   async updateProduct ({ id, name, price, description, specs, availableQuantity }, apiCtx) {
+    assert.user(await hasProductAccess(id, apiCtx), 'Unauthorized for this product');
     await product.update({
       id,
       name,
@@ -31,6 +57,7 @@ const api = {
   },
 
   async deleteProduct ({ id }, apiCtx) {
+    assert.user(await hasProductAccess(id, apiCtx), 'Unauthorized for this product');
     await product.delete(id);
     return {};
   },
@@ -52,10 +79,12 @@ const api = {
   },
 
   async getSubscription ({ id }, apiCtx) {
+    assert.user(await hasSubscriptionAccess(id, apiCtx), 'Unauthorized for this subscription');
     return subscription.get(id);
   },
 
   async updateSubscription ({ id, name, price, description, specs, period }, apiCtx) {
+    assert.user(await hasSubscriptionAccess(id, apiCtx), 'Unauthorized for this subscription');
     await subscription.update({
       id,
       name,
@@ -68,6 +97,7 @@ const api = {
   },
 
   async deleteSubscription ({ id }, apiCtx) {
+    assert.user(await hasSubscriptionAccess(id, apiCtx), 'Unauthorized for this subscription');
     await subscription.delete(id);
     return {};
   },
