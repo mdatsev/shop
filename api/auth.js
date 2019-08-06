@@ -1,14 +1,19 @@
 const assert = require('../utils/assert.js');
-const _ = require('lodash');
-// const organization = require('../controllers/organization.js');
+const secrets = require('../utils/secrets.js');
+const organization = require('../dbmodels/organization.js');
 
 module.exports = {
   async auth (authInfo) {
-    assert.user(_.isObjectLike(authInfo), 'Invalid or missing authInfo');
-    const { organizationId/*, organizationSecret */ } = authInfo;
+    const { organizationId, organizationSecret } = authInfo;
 
-    // const realSecret = organization.getSecret(organizationId);
-    // todo some real checking
+    const org = await organization.get(organizationId);
+
+    assert.user(org, 'Invalid organization id');
+
+    const realSecret = org.secret_key;
+
+    assert.user(secrets.compare(organizationSecret, realSecret), 'Invalid organization secret');
+
     return { organizationId };
   },
 };

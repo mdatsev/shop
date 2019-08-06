@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const util = require('util');
+const _ = require('lodash');
 const randomBytes = util.promisify(crypto.randomBytes);
 
 module.exports = {
@@ -8,6 +9,13 @@ module.exports = {
   },
 
   compare (a, b) {
+    if (
+      !_.isString(a) ||
+      !_.isString(b) ||
+      a.length !== b.length
+    ) {
+      return false;
+    }
     return crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
   },
 };

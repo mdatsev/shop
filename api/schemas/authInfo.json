@@ -3,8 +3,11 @@
   "properties": {
     "organizationId": {
       "type": "string"
+    },
+    "organizationSecret": {
+      "type": "string"
     }
   },
-  "required": ["organizationId"],
+  "required": ["organizationId", "organizationSecret"],
   "additionalProperties": false
 }

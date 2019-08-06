@@ -1,5 +1,6 @@
 const assert = require('../utils/assert.js');
 const db = require('../db.js');
+const secrets = require('../utils/secrets.js');
 
 function validate ({ name }) {
   assert.user(name, 'name must be present');
@@ -9,11 +10,12 @@ module.exports = {
   async create ({ name, ownerId }) {
     validate({ name });
     const result = await db.query(`
-      INSERT INTO organization (name, owner_id)
-      VALUES ($name, $ownerId)
+      INSERT INTO organization (name, owner_id, secret_key)
+      VALUES ($name, $ownerId, $secretKey)
       RETURNING id`, {
       name,
       ownerId,
+      secretKey: await secrets.generate(),
     });
 
     return result.rows[0];
@@ -21,7 +23,7 @@ module.exports = {
 
   async get (id) {
     const result = await db.query(`
-      SELECT name, owner_id
+      SELECT name, owner_id, secret_key
       FROM organization
       WHERE id = $id`, {
       id,
@@ -47,17 +49,6 @@ module.exports = {
       WHERE id = $id`, {
       id,
     });
-  },
-
-  async getSecret (id) {
-    const result = await db.query(`
-      SELECT secret
-      FROM organization
-      WHERE id = $id`, {
-      id,
-    });
-
-    return result.rows[0].secret;
   },
 
   async getAllOfUser (id) {
