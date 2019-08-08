@@ -1,0 +1,11 @@
+extends layout
+
+block main-content
+  .col-lg-9
+    h1.listing-header Integration
+    button.btn.btn-info(data-toggle='collapse', data-target='#apiKey') Show API key
+    form.btn-form.d-inline.float-right(method='post', action='regenerateKey')
+      button.btn.btn-danger(type='submit') DELETE key and generate new one
+    pre#apiKey.collapse.col #{secret_key}
+
+

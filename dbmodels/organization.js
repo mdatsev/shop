@@ -23,7 +23,7 @@ module.exports = {
 
   async get (id) {
     const result = await db.query(`
-      SELECT name, owner_id, secret_key
+      SELECT id, name, owner_id, secret_key
       FROM organization
       WHERE id = $id`, {
       id,
@@ -60,5 +60,18 @@ module.exports = {
     });
 
     return result.rows;
+  },
+
+  async regenerateKey ({ id }) {
+    const secretKey = await secrets.generate();
+
+    await db.query(`
+      UPDATE organization
+      SET
+        secret_key = $secretKey
+      WHERE id = $id`, {
+      id,
+      secretKey,
+    });
   },
 };

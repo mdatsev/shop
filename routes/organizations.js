@@ -144,6 +144,16 @@ const shopsRouter = new Router()
     ctx.redirect('..');
   });
 
+const integrationRouter = new Router()
+
+  .get('/', async ctx => {
+    await ctx.render('orgs/edit/integration', ctx.organization);
+  })
+  .post('/regenerateKey', async ctx => {
+    await organization.regenerateKey({ id: ctx.organization.id });
+    ctx.redirect('.');
+  });
+
 const orgsRouter = new Router({ prefix: '/orgs' })
 
   .use(loggedIn)
@@ -182,13 +192,16 @@ const orgsRouter = new Router({ prefix: '/orgs' })
 
   .use('/:orgId/edit/products', authOrg, productsRouter.routes(), productsRouter.allowedMethods())
   .use('/:orgId/edit/subscriptions', authOrg, subscriptionsRouter.routes(), subscriptionsRouter.allowedMethods())
-  .use('/:orgId/edit/shops', authOrg, shopsRouter.routes(), shopsRouter.allowedMethods());
+  .use('/:orgId/edit/shops', authOrg, shopsRouter.routes(), shopsRouter.allowedMethods())
+  .use('/:orgId/edit/integration', authOrg, integrationRouter.routes(), integrationRouter.allowedMethods());
 
 async function authOrg (ctx, next) {
   const org = await organization.get(ctx.params.orgId);
   const userId = ctx.auth.userId;
 
   assert.user(org.owner_id === userId, 'User unauthorized to this org');
+  ctx.organization = org;
+  ctx.viewGlobals.currentOrganization = org;
   await next();
 }
 

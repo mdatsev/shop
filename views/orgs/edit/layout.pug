@@ -4,11 +4,12 @@ block content
   .container
     .row
       .col-lg-3
-        h1.my-4 Sidebar
+        h1.my-4 #{currentOrganization.name}
         .list-group
+          a.list-group-item(href='#' onclick="goToOrg('edit/index/')") Edit
           a.list-group-item(href='#' onclick="goToOrg('edit/products/')") Products
           a.list-group-item(href='#' onclick="goToOrg('edit/subscriptions/')") Subscriptions
           a.list-group-item(href='#' onclick="goToOrg('edit/shops/')") Shops
-          a.list-group-item(href='#' onclick="goToOrg('edit/payments')") Payments
-          a.list-group-item(href='#' onclick="goToOrg('edit/integration')") Integration
+          a.list-group-item(href='#' onclick="goToOrg('edit/payments/')") Payments
+          a.list-group-item(href='#' onclick="goToOrg('edit/integration/')") Integration
       block main-content

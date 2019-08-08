@@ -23,6 +23,7 @@
     "lodash": "^4.17.15",
     "node-postgres-named": "^2.4.1",
     "pg": "^7.11.0",
+    "prettier": "^1.18.2",
     "pug": "^2.0.3",
     "stripe": "^7.5.3"
   },
