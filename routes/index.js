@@ -1,3 +1,6 @@
+const assert = require('../utils/assert');
+const _ = require('lodash');
+
 const router = new (require('koa-router'))();
 const { notLoggedIn } = require('../middleware/user_auth.js');
 const user = require('../dbmodels/user.js');
@@ -61,7 +64,12 @@ router.get('/', async ctx => {
     showSubscriptions = '1',
     specName,
     specValue,
+    minPriceUSD = '0.00',
+    maxPriceUSD = ((await item.getMaxPrice()) / 100 + 1).toFixed(2),
   } = ctx.query;
+
+  assert.user(_.isFinite(+minPriceUSD), 'Invalid min price');
+  assert.user(_.isFinite(+maxPriceUSD), 'Invalid max price');
 
   const pageIndex = pageNum - 1; // 0 indexed
   const limit = +perPage;
@@ -69,6 +77,9 @@ router.get('/', async ctx => {
   const order = sort; // todo assert ['created_at', 'price', 'name', 'popularity_score'].includes(sort)
   const ascending = ascOrDesc === 'asc';
   const types = [];
+
+  const minPrice = +minPriceUSD * 100;
+  const maxPrice = +maxPriceUSD * 100;
 
   if (+showProducts) {
     types.push('product');
@@ -85,8 +96,7 @@ router.get('/', async ctx => {
     offset,
     order,
     ascending,
-    filter: { specName, specValue },
-    types,
+    filter: { specName, specValue, minPrice, maxPrice, types },
   });
 
   const pages = [...Array(11).keys()] // number of displayed page buttons
@@ -103,6 +113,8 @@ router.get('/', async ctx => {
     showSubscriptions,
     specName,
     specValue,
+    minPriceUSD,
+    maxPriceUSD,
   });
 });
 

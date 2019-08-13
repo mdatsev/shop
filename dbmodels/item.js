@@ -56,7 +56,18 @@ module.exports = {
     }, client);
   },
 
-  async getAll ({ limit, offset, order, ascending, filter: { specName, specValue }, types }) {
+  async getAll ({
+    limit,
+    offset,
+    order,
+    ascending,
+    filter: {
+      specName,
+      specValue,
+      minPrice,
+      maxPrice,
+      types,
+    } }) {
     const result = await db.query(`
       SELECT
         COALESCE(p.id, s.id) as id,
@@ -79,6 +90,8 @@ module.exports = {
       WHERE (spec.name = $specName OR $allSpecNames)
         AND (item_spec.value = $specValue OR $allSpecValues)
         AND i.type = ANY($types::item_type[])
+        AND i.price >= $minPrice
+        AND i.price <= $maxPrice
       GROUP BY i.id, p.id, s.id
       ORDER BY ${db.escapeIdentifier(order)} ${ascending ? 'ASC' : 'DESC'}, i.id
       LIMIT $limit
@@ -90,6 +103,8 @@ module.exports = {
       specValue,
       allSpecValues: !specValue,
       types,
+      minPrice,
+      maxPrice,
     });
 
     return result.rows;
@@ -104,4 +119,13 @@ module.exports = {
       id,
     });
   },
+
+  async getMaxPrice () {
+    const result = await db.query(`
+      SELECT MAX(price) as price
+      FROM item`);
+
+    return result.rows[0].price;
+  },
+
 };

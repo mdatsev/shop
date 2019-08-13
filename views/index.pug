@@ -29,6 +29,14 @@ block content
             input(type='checkbox', onclick='this.previousSibling.value=1-this.previousSibling.value', checked=!!+showSubscriptions)
             | Subscriptions
           hr
+          h4 Price
+          .input-group
+            span.input-group-text $
+            input(type='number', name='minPriceUSD', placeholder='Minimum price', value=minPriceUSD)
+          .input-group
+            span.input-group-text $
+            input(type='number', name='maxPriceUSD', placeholder='Maximum price', value=maxPriceUSD)
+          hr
           h4 Specs
           input(type='text', name='specName', placeholder='Spec name', value=specName)
           input(type='text', name='specValue', placeholder='Value (default all)', value=specValue)
