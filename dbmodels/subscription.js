@@ -1,17 +1,6 @@
 const db = require('../db.js');
 const item = require('./item.js');
 
-const EXPOSED_FIELDS = `
-  subscription.id as id,
-  subscription.period as period,
-  item.id as "itemId",
-  item.name as name,
-  item.type as type,
-  item.price as price,
-  item.organization_id as "organizationId",
-  item.image as image
-`;
-
 // function validate ({ period }) {
 // // todo
 // }
@@ -43,9 +32,19 @@ module.exports = {
 
   async get (id) {
     const result = await db.query(`
-      SELECT ${EXPOSED_FIELDS}
+      SELECT 
+        subscription.id as id,
+        subscription.period as period,
+        item.id as "itemId",
+        item.name as name,
+        item.type as type,
+        item.price as price,
+        item.organization_id as "organizationId",
+        item.image as image,
+        organization.name as "organizationName"
       FROM subscription
       INNER JOIN item on subscription.item_id = item.id
+      INNER JOIN organization on item.organization_id = organization.id
       WHERE subscription.id = $id`, {
       id,
     });
@@ -90,13 +89,25 @@ module.exports = {
 
   async getAllOrg (id) {
     const result = await db.query(`
-      SELECT ${EXPOSED_FIELDS}
+      SELECT
+        subscription.id as id,
+        subscription.period as period,
+        item.id as "itemId",
+        item.name as name,
+        item.type as type,
+        item.price as price,
+        item.organization_id as "organizationId",
+        item.image as image
       FROM subscription 
-      INNER JOIN item on subscription.item_id = item.id 
+      INNER JOIN item on subscription.item_id = item.id
       WHERE item.organization_id = $id;`, {
       id,
     });
 
     return result.rows;
+  },
+
+  async addPopularity ({ itemId }) {
+    await item.addPopularity({ id: itemId });
   },
 };

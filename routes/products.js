@@ -8,6 +8,8 @@ router.get('/:id/show', async ctx => {
 
   const specs = await spec.get(prod);
 
+  await product.addPopularity(prod);
+
   await ctx.render('products/show', { ...prod, specs });
 });
 

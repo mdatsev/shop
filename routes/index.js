@@ -66,7 +66,7 @@ router.get('/', async ctx => {
   const pageIndex = pageNum - 1; // 0 indexed
   const limit = +perPage;
   const offset = pageIndex * limit;
-  const order = sort; // todo assert ['created_at', 'price', 'name'].includes(sort)
+  const order = sort; // todo assert ['created_at', 'price', 'name', 'popularity_score'].includes(sort)
   const ascending = ascOrDesc === 'asc';
   const types = [];
 

@@ -2,18 +2,6 @@ const assert = require('../utils/assert.js');
 const db = require('../db.js');
 const item = require('./item.js');
 
-const EXPOSED_FIELDS = `
-  product.id as id,
-  product.available_quantity as "availableQuantity",
-  item.id as "itemId",
-  item.name as name,
-  item.type as type,
-  item.price as price,
-  item.description as description,
-  item.organization_id as "organizationId",
-  item.image as image
-`;
-
 function validate ({ availableQuantity }) {
   if (availableQuantity != null)
     assert.user(availableQuantity > 0, 'available quantity must be greater than 0');
@@ -47,9 +35,20 @@ module.exports = {
 
   async get (id) {
     const result = await db.query(`
-      SELECT ${EXPOSED_FIELDS}
+      SELECT
+        product.id as id,
+        product.available_quantity as "availableQuantity",
+        item.id as "itemId",
+        item.name as name,
+        item.type as type,
+        item.price as price,
+        item.description as description,
+        item.organization_id as "organizationId",
+        item.image as image,
+        organization.name as "organizationName"
       FROM product
       INNER JOIN item on product.item_id = item.id
+      INNER JOIN organization on item.organization_id = organization.id
       WHERE product.id = $id`, {
       id,
     });
@@ -95,13 +94,26 @@ module.exports = {
 
   async getAllOrg (id) {
     const result = await db.query(`
-      SELECT ${EXPOSED_FIELDS}
+      SELECT
+        product.id as id,
+        product.available_quantity as "availableQuantity",
+        item.id as "itemId",
+        item.name as name,
+        item.type as type,
+        item.price as price,
+        item.description as description,
+        item.organization_id as "organizationId",
+        item.image as image
       FROM product 
-      INNER JOIN item on product.item_id = item.id 
+      INNER JOIN item on product.item_id = item.id
       WHERE item.organization_id = $id;`, {
       id,
     });
 
     return result.rows;
+  },
+
+  async addPopularity ({ itemId }) {
+    await item.addPopularity({ id: itemId });
   },
 };

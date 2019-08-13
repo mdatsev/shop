@@ -94,4 +94,14 @@ module.exports = {
 
     return result.rows;
   },
+
+  async addPopularity ({ id }) {
+    await db.query(`
+      UPDATE item
+      SET
+        popularity_score = popularity_score + 1
+      WHERE id = $id`, {
+      id,
+    });
+  },
 };

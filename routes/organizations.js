@@ -184,7 +184,7 @@ const orgsRouter = new Router({ prefix: '/orgs' })
     ctx.redirect('/orgs');
   })
 
-  .post('/:orgId/edit/delete', authOrg, async ctx => {
+  .post('/:orgId/edit/index/delete', authOrg, async ctx => {
     await organization.delete(ctx.params.orgId);
 
     ctx.redirect('/orgs');

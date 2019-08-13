@@ -30,6 +30,7 @@ CREATE TABLE item (
     type item_type NOT NULL,
     price bigint NOT NULL CHECK (price > 0),
     image varchar,
+    popularity_score bigint DEFAULT 0,
     created_at timestamp DEFAULT NOW()
 );
 
