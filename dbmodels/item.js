@@ -56,7 +56,7 @@ module.exports = {
     }, client);
   },
 
-  async getAll ({ limit, offset, order, ascending, filter: { specName, specValue } }) {
+  async getAll ({ limit, offset, order, ascending, filter: { specName, specValue }, types }) {
     const result = await db.query(`
       SELECT
         COALESCE(p.id, s.id) as id,
@@ -78,6 +78,7 @@ module.exports = {
         ON s.item_id = i.id
       WHERE (spec.name = $specName OR $allSpecNames)
         AND (item_spec.value = $specValue OR $allSpecValues)
+        AND i.type = ANY($types::item_type[])
       GROUP BY i.id, p.id, s.id
       ORDER BY ${db.escapeIdentifier(order)} ${ascending ? 'ASC' : 'DESC'}, i.id
       LIMIT $limit
@@ -88,6 +89,7 @@ module.exports = {
       allSpecNames: !specName,
       specValue,
       allSpecValues: !specValue,
+      types,
     });
 
     return result.rows;
