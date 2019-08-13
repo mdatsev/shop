@@ -4,9 +4,8 @@ block content
   .container
     .row
       .col-lg-3
-        h1.my-4 Filters
         form.compact-form(method='get')
-          label Sort
+          h4 Sort
             select(name='sort')
               option(value='created_at', selected=(sort=='created_at')) Created at
               option(value='price' selected=(sort=='price')) Price
@@ -17,13 +16,23 @@ block content
           label
             input(type='radio', name='ascOrDesc', value='desc', checked=(ascOrDesc=='desc'))
             | Descending
+          hr
+          h4 Show
+          label
+            // based on https://stackoverflow.com/a/25764926
+            input(type='hidden', name='showProducts', value=showProducts)
+            input(type='checkbox', onclick='this.previousSibling.value=1-this.previousSibling.value', checked=!!+showProducts)
+            | Products
+          label
+            input(type='hidden', name='showSubscriptions', value=showSubscriptions)
+            input(type='checkbox', onclick='this.previousSibling.value=1-this.previousSibling.value', checked=!!+showSubscriptions)
+            | Subscriptions
+          hr
+          h4 Specs
           input(type='text', name='specName', placeholder='Spec name', value=specName)
           input(type='text', name='specValue', placeholder='Value (default all)', value=specValue)
           //- label Placeholder
           //-   input(name='name', type='text', placeholder='Placeholder')
-          //- label
-          //-   input(name='name', type='checkbox')
-          //-   | Placeholder
           button(type='submit') Filter
       .col-lg-9
         .row
