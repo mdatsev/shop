@@ -54,11 +54,30 @@ router.get('/basket', async ctx => {
   await ctx.render('basket', { products, total });
 });
 
+router.get('/addToBasket', async ctx => {
+  const items = JSON.parse(ctx.query.items);
+  const products = [];
+  const total = { price: 0 };
+
+  for (const { type, id, basketId } of items) {
+    if (type === 'product') {
+      const prod = await product.get(id);
+
+      if (!prod) continue;
+
+      prod.basketId = basketId;
+      total.price += +prod.price;
+      products.push(prod);
+    }
+  }
+  await ctx.render('addToBasket', { products, total, basketProducts: JSON.stringify(items) });
+});
+
 router.get('/', async ctx => {
   const {
     pageNum = '1',
     perPage = '15',
-    sort = 'created_at',
+    sort = 'popularity_score',
     ascOrDesc = 'desc',
     showProducts = '1',
     showSubscriptions = '1',

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .center.col-lg-9
+    h1 Do you want to add all to basket?
+    table.table
+      thead
+        tr
+          th Product
+          th Price
+      tbody
+        each product in products
+          tr
+            td 
+              a(href=`/${product.type}s/${product.id}/show`) #{product.name}
+            td #{formatPrice(product.price)}
+    button.mx-2.btn.btn-success.float-right(onclick=`addAllToBasket(${basketProducts})`) Add all to basket

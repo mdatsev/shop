@@ -67,7 +67,8 @@ module.exports = {
       minPrice,
       maxPrice,
       types,
-    } }) {
+    } = {},
+  } = {}) {
     const result = await db.query(`
       SELECT
         COALESCE(p.id, s.id) as id,
@@ -87,21 +88,20 @@ module.exports = {
         ON p.item_id = i.id
       LEFT JOIN subscription s
         ON s.item_id = i.id
-      WHERE (spec.name = $specName OR $allSpecNames)
-        AND (item_spec.value = $specValue OR $allSpecValues)
-        AND i.type = ANY($types::item_type[])
-        AND i.price >= $minPrice
-        AND i.price <= $maxPrice
+      WHERE true
+        ${specName ? 'AND spec.name = $specName' : ''}
+        ${specValue ? 'AND item_spec.value = $specValue' : ''}
+        ${types ? 'AND i.type = ANY($types::item_type[])' : ''}
+        ${minPrice ? 'AND i.price >= $minPrice' : ''}
+        ${maxPrice ? 'AND i.price <= $maxPrice' : ''}        
       GROUP BY i.id, p.id, s.id
-      ORDER BY ${db.escapeIdentifier(order)} ${ascending ? 'ASC' : 'DESC'}, i.id
-      LIMIT $limit
-      OFFSET $offset`, {
+      ${order ? `ORDER BY ${db.escapeIdentifier(order)} ${ascending ? 'ASC' : 'DESC'}, i.id` : ''}
+      ${limit ? 'LIMIT $limit' : ''}
+      ${limit ? 'OFFSET $offset' : ''}`, {
       limit,
       offset,
       specName,
-      allSpecNames: !specName,
       specValue,
-      allSpecValues: !specValue,
       types,
       minPrice,
       maxPrice,

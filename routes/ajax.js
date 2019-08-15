@@ -9,6 +9,7 @@ router.post('/shopLocations', async ctx => {
 });
 
 const generatePaymentResponse = (intent) => {
+  console.log(intent);
   if (
     intent.status === 'requires_action' &&
     intent.next_action.type === 'use_stripe_sdk'

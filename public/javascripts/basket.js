@@ -49,6 +49,10 @@ function addToBasket (type, id) {
   updateBasketPreview();
 }
 
+function addAllToBasket (items) {
+  items.forEach(({ type, id }) => addToBasket(type, id));
+}
+
 function removeFromBasket (basketId) {
   const current = getItems().filter(e => e.basketId !== basketId);
 
