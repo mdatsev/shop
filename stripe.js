@@ -1,4 +1,4 @@
-const stripe = require('stripe')('sk_test_0gAU6tNbblQnwj3ynIg4t4Mk00voPXU34K');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const request = require('request-promise-native');
 
 const assert = require('./utils/assert.js');

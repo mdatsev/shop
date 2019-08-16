@@ -53,6 +53,10 @@ function addAllToBasket (items) {
   items.forEach(({ type, id }) => addToBasket(type, id));
 }
 
+function clearBasket () {
+  setItems([]);
+}
+
 function removeFromBasket (basketId) {
   const current = getItems().filter(e => e.basketId !== basketId);
 

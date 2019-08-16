@@ -25,9 +25,33 @@ block body
         th Total:
         th #{formatPrice(total.price)}
         th
-  h2 Checkout now
-  .example.example3
-    input.form-control#cardholder-name(type='text', placeholder='Full name', value=userName)
-    #card-element
-    button#card-button Submit Payment
-  script(src='/javascripts/checkout.js')
+  if showCheckout
+    h2 Checkout now
+    .example.example3
+      label(for='cardholder-name', required) Full name
+      input.form-control#cardholder-name(type='text', placeholder='Full name', value=userName)
+      #card-element
+      button#card-button Submit Payment
+    script(src='/javascripts/checkout.js')
+
+  #error-modal.modal.fade(tabindex='-1' role='dialog')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5.modal-title Error
+          button.close(type='button' data-dismiss='modal')
+            span(aria-hidden='true') ×
+        .modal-body#modal-error
+          | ...
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+  
+  #success-modal.modal.fade(tabindex='-1' role='dialog')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5.modal-title Success!
+        .modal-body
+          | Success!
+        .modal-footer
+          a.btn.btn-success(type='button' href='/basket') OK

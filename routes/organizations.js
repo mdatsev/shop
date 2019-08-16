@@ -159,7 +159,7 @@ const integrationRouter = new Router()
 const paymentsRouter = new Router()
 
   .get('/', async ctx => {
-    const clientId = 'ca_FXjFFHE4DzS9fUPaYoUWJjDxdtxwdt2V';
+    const clientId = process.env.STRIPE_CLIENT_ID;
     const state = JSON.stringify({ organizationId: ctx.organization.id });
     const stripeConnectUrl =
       `https://connect.stripe.com/oauth/authorize?client_id=${clientId}&redirect=https://10.20.1.149/stripeAuth&state=${state}&response_type=code`;

@@ -14,11 +14,12 @@ function getRoute (from, to) {
   const body = {
     jsonrpc: '2.0',
     method: 'findRoute',
+    // method: 'getAllFlights',
     params: {
       from,
       to,
-      departureStart: '20/07/2019',
-      departureEnd: '30/07/2019 12:59:59',
+      // departureStart: '20/07/2019',
+      // departureEnd: '30/07/2019 12:59:59',
       filter: 'shortest',
     },
     id: 1,

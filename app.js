@@ -34,7 +34,7 @@ const app = new Koa()
     ctx.viewGlobals.userName = ctx.auth.userName;
     await next();
   })
-  .use(bodyparser({ enableTypes: ['form'] }))
+  .use(bodyparser({ enableTypes: ['form', 'json'] }))
   .use(indexRoutes.routes(), indexRoutes.allowedMethods())
   .use(organizationsRoutes.routes(), organizationsRoutes.allowedMethods())
   .use(productsRoutes.routes(), productsRoutes.allowedMethods())

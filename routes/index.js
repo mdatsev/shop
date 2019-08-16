@@ -39,7 +39,7 @@ router.post('/register', notLoggedIn, async ctx => {
 });
 
 router.get('/basket', async ctx => {
-  const items = JSON.parse(ctx.query.items);
+  const items = ctx.query.items ? JSON.parse(ctx.query.items) : [];
   const products = [];
   const total = { price: 0 };
 
@@ -54,7 +54,7 @@ router.get('/basket', async ctx => {
       products.push(prod);
     }
   }
-  await ctx.render('basket', { products, total });
+  await ctx.render('basket', { products, total, showCheckout: products.length > 0 });
 });
 
 router.get('/addToBasket', async ctx => {
@@ -88,7 +88,7 @@ router.get('/stripeAuth', async ctx => {
 
   const organizationId = parsedState.organizationId;
 
-  organization.setStripeAccount({ id: organizationId, stripeUserId, stripeAccessToken });
+  await organization.setStripeAccount({ id: organizationId, stripeUserId, stripeAccessToken });
 
   ctx.redirect(`/orgs/${organizationId}/edit/payments`);
 });
@@ -97,8 +97,8 @@ router.get('/', async ctx => {
   const {
     pageNum = '1',
     perPage = '15',
-    sort = 'popularity_score',
-    ascOrDesc = 'desc',
+    sort = 'price',
+    ascOrDesc = 'asc',
     showProducts = '1',
     showSubscriptions = '1',
     specName,

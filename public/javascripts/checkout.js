@@ -37,15 +37,21 @@ cardElement.mount('#card-element');
 const cardholderName = document.getElementById('cardholder-name');
 const cardButton = document.getElementById('card-button');
 
+const showError = message => {
+  $('#modal-error').text(message);
+  $('#error-modal').modal();
+};
+
 const handleServerResponse = async (response) => {
   if (response.error) {
-    console.error('response error', response.error);
+    showError(response.error);
   } else if (response.requires_action) {
     console.log('requires action', response);
     const { error: errorAction, paymentIntent } =
       await stripe.handleCardAction(response.payment_intent_client_secret);
 
     if (errorAction) {
+      showError('Error. Please try again.');
       console.error('action error', errorAction);
     } else {
       const serverResponse = await fetch('/ajax/confirm_payment', {
@@ -57,7 +63,9 @@ const handleServerResponse = async (response) => {
       handleServerResponse(await serverResponse.json());
     }
   } else {
-    console.log('success');
+    // eslint-disable-next-line no-undef
+    clearBasket();
+    $('#success-modal').modal({ backdrop: 'static', keyboard: false });
   }
 };
 
@@ -68,7 +76,18 @@ cardButton.addEventListener('click', async (ev) => {
     });
 
   if (error) {
-    console.error('payment error', error);
+    if (error.type === 'validation_error') {
+      showError(error.message);
+    } else if (
+      error.type === 'invalid_request_error' &&
+      error.code === 'parameter_invalid_empty' &&
+      error.param === 'billing_details[name]'
+    ) {
+      showError('Full name is required.');
+    } else {
+      showError('Payment error. Please try again.');
+      console.error('payment error', error);
+    }
   } else {
     const response = await fetch('/ajax/confirm_payment', {
       method: 'POST',
