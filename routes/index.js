@@ -1,10 +1,13 @@
-const assert = require('../utils/assert');
 const _ = require('lodash');
+const { recieveStripeAuth } = require('../stripe.js');
+
+const assert = require('../utils/assert');
 
 const router = new (require('koa-router'))();
 const { notLoggedIn } = require('../middleware/user_auth.js');
 const user = require('../dbmodels/user.js');
 const item = require('../dbmodels/item.js');
+const organization = require('../dbmodels/organization.js');
 
 const product = require('../dbmodels/product.js');
 
@@ -71,6 +74,23 @@ router.get('/addToBasket', async ctx => {
     }
   }
   await ctx.render('addToBasket', { products, total, basketProducts: JSON.stringify(items) });
+});
+
+router.get('/stripeAuth', async ctx => {
+  const { scope: requestScope, code, state } = ctx.request.query;
+
+  assert.peer(requestScope === 'read_only');
+  assert.peer(code);
+  assert.peer(state);
+  const parsedState = JSON.parse(state);
+
+  const { stripeUserId, accessToken: stripeAccessToken } = await recieveStripeAuth({ code });
+
+  const organizationId = parsedState.organizationId;
+
+  organization.setStripeAccount({ id: organizationId, stripeUserId, stripeAccessToken });
+
+  ctx.redirect(`/orgs/${organizationId}/edit/payments`);
 });
 
 router.get('/', async ctx => {

@@ -1,0 +1,12 @@
+extends layout
+
+block main-content
+  .col-lg-9
+    h1.listing-header Payments
+    if stripeUserId
+      h4 Stripe connected! 
+      p Stripe email: #{stripeUserEmail}
+    a.btn.btn-primary(href=stripeConnectUrl) Link with stripe
+    
+
+

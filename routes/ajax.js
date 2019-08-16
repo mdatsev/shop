@@ -1,5 +1,5 @@
 const router = new (require('koa-router'))({ prefix: '/ajax' });
-const stripe = require('stripe')('sk_test_0gAU6tNbblQnwj3ynIg4t4Mk00voPXU34K');
+const { stripe } = require('../stripe.js');
 const shop = require('../dbmodels/shop.js');
 
 router.post('/shopLocations', async ctx => {

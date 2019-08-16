@@ -23,7 +23,7 @@ module.exports = {
 
   async get (id) {
     const result = await db.query(`
-      SELECT id, name, owner_id, secret_key
+      SELECT id, name, owner_id, secret_key, stripe_user_id
       FROM organization
       WHERE id = $id`, {
       id,
@@ -60,6 +60,19 @@ module.exports = {
     });
 
     return result.rows;
+  },
+
+  async setStripeAccount ({ id, stripeUserId, stripeAccessToken }) {
+    await db.query(`
+      UPDATE organization
+      SET
+        stripe_user_id = $stripeUserId,
+        stripe_access_token = $stripeAccessToken
+      WHERE id = $id`, {
+      id,
+      stripeUserId,
+      stripeAccessToken,
+    });
   },
 
   async regenerateKey ({ id }) {

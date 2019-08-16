@@ -19,7 +19,10 @@ CREATE TABLE organization (
     id bigserial PRIMARY KEY,
     owner_id bigint NOT NULL REFERENCES "user",
     name varchar NOT NULL,
-    secret_key varchar
+    secret_key varchar,
+    balance bigint not null DEFAULT 0,
+    stripe_user_id varchar,
+    stripe_access_token varchar
 );
 
 CREATE TABLE item (

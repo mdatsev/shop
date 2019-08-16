@@ -1,5 +1,7 @@
 const Router = require('koa-router');
 
+const { stripe }= require('../stripe.js');
+
 const assert = require('../utils/assert');
 
 const { loggedIn } = require('../middleware/user_auth.js');
@@ -154,6 +156,21 @@ const integrationRouter = new Router()
     ctx.redirect('.');
   });
 
+const paymentsRouter = new Router()
+
+  .get('/', async ctx => {
+    const clientId = 'ca_FXjFFHE4DzS9fUPaYoUWJjDxdtxwdt2V';
+    const state = JSON.stringify({ organizationId: ctx.organization.id });
+    const stripeConnectUrl =
+      `https://connect.stripe.com/oauth/authorize?client_id=${clientId}&redirect=https://10.20.1.149/stripeAuth&state=${state}&response_type=code`;
+
+    const stripeUserId = ctx.organization.stripe_user_id;
+
+    const { email: stripeUserEmail } = await stripe.accounts.retrieve(stripeUserId);
+
+    await ctx.render('orgs/edit/payments', { stripeConnectUrl, stripeUserId: ctx.organization.stripe_user_id, stripeUserEmail });
+  });
+
 const orgsRouter = new Router({ prefix: '/orgs' })
 
   .use(loggedIn)
@@ -193,7 +210,8 @@ const orgsRouter = new Router({ prefix: '/orgs' })
   .use('/:orgId/edit/products', authOrg, productsRouter.routes(), productsRouter.allowedMethods())
   .use('/:orgId/edit/subscriptions', authOrg, subscriptionsRouter.routes(), subscriptionsRouter.allowedMethods())
   .use('/:orgId/edit/shops', authOrg, shopsRouter.routes(), shopsRouter.allowedMethods())
-  .use('/:orgId/edit/integration', authOrg, integrationRouter.routes(), integrationRouter.allowedMethods());
+  .use('/:orgId/edit/integration', authOrg, integrationRouter.routes(), integrationRouter.allowedMethods())
+  .use('/:orgId/edit/payments', authOrg, paymentsRouter.routes(), paymentsRouter.allowedMethods());
 
 async function authOrg (ctx, next) {
   const org = await organization.get(ctx.params.orgId);
