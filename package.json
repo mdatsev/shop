@@ -24,7 +24,7 @@
     "node-postgres-named": "^2.4.1",
     "pg": "^7.11.0",
     "prettier": "^1.18.2",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "stripe": "^7.5.3"
